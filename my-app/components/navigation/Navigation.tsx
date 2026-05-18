@@ -98,7 +98,7 @@ export default function Navigation() {
               Donate
             </span>
             <a
-              href="https://www.paypal.com"
+              href="https://www.paypal.com/donate/?hosted_button_id=P2HJJE69NEKRG"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center">

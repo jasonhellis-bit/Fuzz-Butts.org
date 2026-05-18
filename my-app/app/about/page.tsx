@@ -14,37 +14,59 @@ export default function About() {
                   />
                 </div>
                 <div className="w-full sm:w-2/3">
-                  <h1 className="text-4xl font-bold mb-4">Lorem Ipsum</h1>
+                  <h1 className="text-4xl font-bold mb-4">
+                    Amelia Duncan, Founder
+                  </h1>
                   <p className="text-lg text-gray-700 mb-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    My journey into cat rescuing started with one scared little
+                    stray cat that I saw at a fast food restaurant. I would stop
+                    there to get food frequently on my way to work. I would see
+                    her there almost every time I would stop. I decided to trap
+                    her one night and once she was trapped I took her home.
                   </p>
                   <p className="text-lg text-gray-700 mb-6">
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                    irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore eu fugiat.
+                    What began as helping one cat quickly turned into helping
+                    many more. I started noticing how many homeless cats were
+                    living outside, especially kittens born in unsafe
+                    conditions. I learned about the overwhelming number of
+                    animals in shelters and how easily cats can be overlooked.
+                    The more I learned, the harder it became to turn away.
                   </p>
                   <p className="text-lg text-gray-700 mb-6">
-                    Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum. Lorem
-                    ipsum dolor sit amet, consectetur adipiscing elit.
+                    Cat rescuing has taught me patience, compassion, and
+                    resilience. Many of the cats I’ve worked with arrived
+                    scared, sick, injured, or completely unsocialized. Some had
+                    never experienced kindness from humans before. Watching them
+                    slowly learn to trust again is one of the most rewarding
+                    experiences imaginable. There is nothing quite like seeing a
+                    frightened cat transform into a confident, loving companion
+                    once they realize they are safe.
                   </p>
                   <p className="text-lg text-gray-700 mb-6">
-                    Curabitur pretium tincidunt lacus. Nulla gravida orci a
-                    odio. Nullam varius, turpis et commodo pharetra, est eros
-                    bibendum elit, nec luctus magna felis sollicitudin mauris.
+                    Over time, my passion for rescue grew into something much
+                    bigger than I ever expected. Rescue work is not always easy.
+                    It can be emotionally exhausting, heartbreaking, and
+                    financially challenging. There are moments of loss and
+                    situations you never forget. But there are also incredible
+                    victories — the successful adoptions, the sick kittens who
+                    survive, and the families who discover the joy of giving a
+                    rescue cat a second chance.
                   </p>
                   <p className="text-lg text-gray-700 mb-6">
-                    Curabitur pretium tincidunt lacus. Nulla gravida orci a
-                    odio. Nullam varius, turpis et commodo pharetra, est eros
-                    bibendum elit, nec luctus magna felis sollicitudin mauris.
+                    That passion ultimately inspired the creation of Fuzz Butts,
+                    a nonprofit dedicated to rescuing cats and helping them find
+                    safe, loving homes. Through rescue efforts, fostering,
+                    community support, and education, the mission has always
+                    remained the same: to give vulnerable cats the care,
+                    dignity, and love they deserve.
                   </p>
                   <p className="text-lg text-gray-700 mb-6">
-                    Curabitur pretium tincidunt lacus. Nulla gravida orci a
-                    odio. Nullam varius, turpis et commodo pharetra, est eros
-                    bibendum elit, nec luctus magna felis sollicitudin mauris.
+                    For me, cat rescuing is more than a hobby or volunteer
+                    effort. It is a lifelong commitment and a true calling.
+                    Every cat has a story, and every rescue reminds me why this
+                    work matters. Even the smallest act of kindness can
+                    completely change an animal’s life. In return, these cats
+                    have changed mine in ways I never could have imagined.
                   </p>
                 </div>
               </div>

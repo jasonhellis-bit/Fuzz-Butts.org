@@ -5,3 +5,13 @@ export interface Cat {
   description: string;
   imageUrl: string;
 }
+
+export interface User {
+  name: string;
+  email: string;
+  role: string;
+  audit: {
+    action: string;
+    timestamp: string;
+  }[];
+}

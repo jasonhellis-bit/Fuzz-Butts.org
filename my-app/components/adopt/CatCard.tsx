@@ -1,6 +1,6 @@
 import { Cat } from "@/types/types";
 
-export default function CatCell({ cat }: { cat: Cat }) {
+export default function CatCard({ cat }: { cat: Cat }) {
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <img
