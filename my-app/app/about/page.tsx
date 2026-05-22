@@ -1,4 +1,5 @@
 export default function About() {
+  // comment
   return (
     <div className="min-h-screen w-full bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full flex-col items-center justify-start bg-white dark:bg-black px-6 py-8 sm:px-16">
