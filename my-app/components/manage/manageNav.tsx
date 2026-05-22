@@ -5,7 +5,7 @@ export default function ManageNav() {
     <nav className="bg-gray-100 min-h-screen w-56 flex-shrink-0 p-6">
       <ul className="flex flex-col space-y-4">
         <li>
-          <a href="/admin" className="text-black hover:text-gray-600 flex items-center gap-2">
+          <a href="/admin/manage/home" className="text-black hover:text-gray-600 flex items-center gap-2">
             <LayoutDashboard size={18} />
             Admin Dashboard
           </a>
