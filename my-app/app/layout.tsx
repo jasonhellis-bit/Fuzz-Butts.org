@@ -38,7 +38,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Navigation />
         <FuzzButtsBanner />
-        {children}
+        <main className="flex-1">{children}</main>
+        <footer className="bg-gray-100 border-t border-gray-200 py-4 text-center text-sm text-gray-500">
+          <p>&copy; {new Date().getFullYear()} Fuzz Butts. All rights reserved.</p>
+          <p>Fuzz Butts is a registered 501(c)(3) charitable organization.</p>
+        </footer>
       </body>
     </html>
   );
