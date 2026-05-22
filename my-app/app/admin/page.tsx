@@ -1,10 +1,8 @@
-import ManageNav from "@/components/manage/manageNav";
 import { sampleCats, sampleUsers } from "@/components/helpers/tempData";
 
 export default function AdminPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center mt-10  px-4">
-      <ManageNav />
+    <div className="flex flex-col items-center px-4">
       <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
       <p className="text-lg text-gray-700 mb-6 max-w-2xl text-center">
         Welcome to the admin dashboard. Here you can manage the shelter's

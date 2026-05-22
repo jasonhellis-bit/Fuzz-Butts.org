@@ -3,12 +3,10 @@
 import { sampleCats } from "@/components/helpers/tempData";
 import AddCatCard from "@/components/manage/AddCatCard";
 import ManageCatCard from "@/components/manage/ManageCatCard";
-import ManageNav from "@/components/manage/manageNav";
 
 export default function ManageCatsPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center mt-10 px-4">
-      <ManageNav />
+    <div className="flex flex-col items-center px-4">
       <h1 className="text-4xl font-bold mb-8">Cat Management</h1>
       <p className="text-lg text-gray-700 mb-6 max-w-2xl text-center">
         Here you can manage cat profiles, view cat details, and update cat
