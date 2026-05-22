@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Contact() {
   return (
     <div className="min-h-screen w-full bg-zinc-50 font-sans dark:bg-black">
@@ -6,16 +8,12 @@ export default function Contact() {
           <div className="mx-auto flex w-full justify-center px-2 sm:px-0">
             <div className="w-full max-w-5xl">
               <h1 className="text-4xl font-bold mb-4">Locate Us</h1>
-              <div>
-                {/* put a map here and center on the address: 1521 W Dobbins Rd, Phoenix, AZ 85041 */}
-                <iframe
-                  title="Fuzz Butts Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.1234567890123!2d-112.1234567890123!3d33.1234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x872b123456789012%3A0x1234567890123456!2s1521%20W%20Dobbins%20Rd%2C%20Phoenix%2C%20AZ%2085041!5e0!3m2!1sen!2sus!4v1234567890123"
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen={false}
-                  loading="lazy"
+              <div className="relative w-full h-96">
+                <Image
+                  src="/temp_map.jpg"
+                  alt="Map showing Fuzz Butts location at 1521 W Dobbins Rd, Phoenix, AZ 85041"
+                  fill
+                  className="object-cover rounded"
                 />
               </div>
               <p className="text-lg text-gray-700 mt-6 mb-6">
