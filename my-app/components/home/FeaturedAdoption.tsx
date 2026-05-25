@@ -2,7 +2,7 @@
 
 export default function FeaturedAdoption() {
   return (
-    <section className="w-full max-w-5xl rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/40 backdrop-blur-sm">
+    <section className="w-full max-w-5xl h-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/40 backdrop-blur-sm">
       <div className="text-center">
         <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
           Featured Adoption

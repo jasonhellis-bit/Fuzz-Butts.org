@@ -1,4 +1,5 @@
 import ManageNav from "@/components/manage/manageNav";
+import { UserProvider } from "@/lib/context/UserContext";
 
 export default function ManageLayout({
   children,
@@ -6,9 +7,11 @@ export default function ManageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <ManageNav />
-      <main className="flex-1 p-8">{children}</main>
-    </div>
+    <UserProvider>
+      <div className="flex min-h-screen">
+        <ManageNav />
+        <main className="flex-1 p-8">{children}</main>
+      </div>
+    </UserProvider>
   );
 }

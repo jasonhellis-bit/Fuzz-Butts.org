@@ -2,21 +2,39 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError("");
+
     if (!email || !password) {
       setError("Please enter your email and password.");
       return;
     }
-    // TODO: replace with real auth
+
+    setLoading(true);
+    const supabase = createClient();
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
     router.push("/admin/manage/home");
+    router.refresh();
   }
 
   return (
@@ -60,9 +78,10 @@ export default function AdminLoginPage() {
 
           <button
             type="submit"
-            className="bg-gray-800 text-white rounded py-2 text-sm font-medium hover:bg-gray-700 transition-colors mt-2"
+            disabled={loading}
+            className="bg-gray-800 text-white rounded py-2 text-sm font-medium hover:bg-gray-700 transition-colors mt-2 disabled:opacity-50"
           >
-            Sign In
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
       </div>
