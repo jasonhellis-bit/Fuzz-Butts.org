@@ -1,39 +1,166 @@
 "use client";
 import { User } from "@/types/types";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { updateUser } from "@/app/admin/manage/users/actions";
+
+const AVAILABLE_ROLES = ["admin", "volunteer"] as const;
 
 export default function ManageUserCard({ user }: { user: User }) {
   const [isEditing, setIsEditing] = useState(false);
   const [auditOpen, setAuditOpen] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>(
+    () => user.roles.split(",").map((r) => r.trim()).filter(Boolean)
+  );
+  const [phoneValue, setPhoneValue] = useState(user.phone ?? "");
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function formatPhone(raw: string) {
+    let digits = raw.replace(/\D/g, "");
+    if (digits.length === 11 && digits.startsWith("1")) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+    if (digits.length < 4) return digits;
+    if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+
+  function toggleRole(role: string) {
+    setSelectedRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    );
+  }
+
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setError(null);
+    startTransition(async () => {
+      const result = await updateUser(formData);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setIsEditing(false);
+      }
+    });
+  }
+
+  const fullName = `${user.first_name} ${user.last_name}`;
+  const hasAudit = user.audit && user.audit.length > 0;
+
   if (isEditing) {
     return (
       <div className="bg-white rounded-lg shadow-md p-4 mb-4 w-full max-w-2xl">
-        <input
-          type="text"
-          value={user.name}
-          className="border p-2 mb-2 w-full"
-        />
-        <input
-          type="email"
-          value={user.email}
-          className="border p-2 mb-2 w-full"
-        />
-        <input
-          type="text"
-          value={user.role}
-          className="border p-2 mb-2 w-full"
-        />
-        <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2">
-          Save
-        </button>
+        <form onSubmit={handleSubmit}>
+          <input type="hidden" name="id" value={user.id} />
+          <input type="hidden" name="roles" value={selectedRoles.join(",")} />
+
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <input
+              type="text"
+              name="first_name"
+              defaultValue={user.first_name}
+              required
+              className="border p-2 w-full"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <input
+              type="text"
+              name="last_name"
+              defaultValue={user.last_name}
+              required
+              className="border p-2 w-full"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input
+              type="text"
+              name="title"
+              defaultValue={user.title ?? ""}
+              className="border p-2 w-full"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              defaultValue={user.email ?? ""}
+              className="border p-2 w-full"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+            <input
+              type="tel"
+              name="phone"
+              value={phoneValue}
+              onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
+              className="border p-2 w-full"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Roles</label>
+            <div className="flex gap-4">
+              {AVAILABLE_ROLES.map((role) => (
+                <label key={role} className="flex items-center gap-2 capitalize">
+                  <input
+                    type="checkbox"
+                    checked={selectedRoles.includes(role)}
+                    onChange={() => toggleRole(role)}
+                  />
+                  {role}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select name="status" defaultValue={user.status} className="border p-2 w-full">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="suspended">Suspended</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+
+          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={isPending}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2 disabled:opacity-50">
+            {isPending ? "Saving..." : "Save"}
+          </button>
+          <button
+            type="button"
+            disabled={isPending}
+            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 disabled:opacity-50"
+            onClick={() => setIsEditing(false)}>
+            Cancel
+          </button>
+        </form>
       </div>
     );
-  } else if (user.audit && user.audit.length > 0) {
-    return (
-      <div className="bg-white rounded-lg shadow-md p-4 mb-4 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-2">{user.name}</h2>
-        <p className="text-gray-600 mb-2">{user.email}</p>
-        <p className="text-gray-600 mb-2">{user.role}</p>
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-4 mb-4 w-full max-w-2xl">
+      <h2 className="text-2xl font-bold mb-1">{fullName}</h2>
+      {user.title && <p className="text-gray-500 mb-1">{user.title}</p>}
+      {user.email && <p className="text-gray-600 mb-1">{user.email}</p>}
+      {user.phone && <p className="text-gray-600 mb-1">{formatPhone(user.phone)}</p>}
+      <p className="text-gray-600 mb-1">
+        Status: <span className="capitalize">{user.status}</span>
+      </p>
+      {user.roles && (
+        <p className="text-gray-600 mb-2">Roles: {user.roles}</p>
+      )}
+
+      {hasAudit && (
         <div className="mt-4">
           <button
             type="button"
@@ -54,40 +181,35 @@ export default function ManageUserCard({ user }: { user: User }) {
           </button>
 
           {auditOpen && (
-            <ul className="list-disc pl-5 mt-3">
-              {user.audit.map((entry, index) => (
-                <li key={index} className="text-gray-700">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex-1">{entry.action}</span>
-                    <span className="text-sm text-gray-500 whitespace-nowrap">
-                      {new Date(entry.timestamp).toLocaleString()}
-                    </span>
-                  </div>
-                </li>
+            <div className="mt-3 text-sm">
+              <div className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-1 font-semibold text-gray-500 border-b pb-1 mb-1">
+                <span>Date &amp; Time</span>
+                <span>User</span>
+                <span>Action</span>
+              </div>
+              {user.audit!.map((entry) => (
+                <div key={entry.id} className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-1 py-1 border-b last:border-0 text-gray-700">
+                  <span className="whitespace-nowrap text-gray-500">
+                    {new Date(entry.event_date_time).toLocaleString()}
+                  </span>
+                  <span className="whitespace-nowrap">{fullName}</span>
+                  <span>{entry.description}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
-          onClick={() => setIsEditing(true)}>
-          Edit User
-        </button>
-      </div>
-    );
-  } else {
-    return (
-      <div className="bg-white rounded-lg shadow-md p-4 mb-4 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-2">{user.name}</h2>
-        <p className="text-gray-600 mb-2">{user.email}</p>
-        <p className="text-gray-600 mb-2">{user.role}</p>
-        <p className="text-gray-700 mb-4">No audit trail available.</p>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          onClick={() => setIsEditing(true)}>
-          Edit User
-        </button>
-      </div>
-    );
-  }
+      )}
+
+      {!hasAudit && (
+        <p className="text-gray-700 mb-4 mt-2">No audit trail available.</p>
+      )}
+
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
+        onClick={() => setIsEditing(true)}>
+        Edit User
+      </button>
+    </div>
+  );
 }

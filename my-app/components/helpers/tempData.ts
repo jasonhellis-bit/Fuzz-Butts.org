@@ -42,36 +42,3 @@ export const sampleCats = [
     imageUrl: "/cats/ozzie.jpg",
   },
 ];
-
-export const sampleUsers = [
-  {
-    name: "Amelia Duncan",
-    email: "amelia.duncan@fuzzbutts.org",
-    role: "Admin",
-    audit: [
-      {
-        action: "Created cat profile for Ali",
-        timestamp: "2024-06-01T10:00:00Z",
-      },
-      {
-        action: "Updated cat profile for Luna",
-        timestamp: "2024-06-02T14:30:00Z",
-      },
-    ],
-  },
-  {
-    name: "Jason Ellis",
-    email: "jason.ellis@fuzzbutts.org",
-    role: "Chief Nerd",
-    audit: [
-      {
-        action: "Approved adoption application for Eggs",
-        timestamp: "2024-06-03T09:15:00Z",
-      },
-      {
-        action: "Deleted cat profile for Ham",
-        timestamp: "2024-06-04T16:45:00Z",
-      },
-    ],
-  },
-];
