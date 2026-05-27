@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { setFeatured, endFeatured } from "@/app/admin/manage/featured/actions";
 
 export interface CurrentFeatured {
@@ -34,6 +35,7 @@ export default function FeaturedManager({ current, pets }: { current: CurrentFea
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -43,7 +45,7 @@ export default function FeaturedManager({ current, pets }: { current: CurrentFea
     const result = await endFeatured(current.id);
     setIsPending(false);
     if (result.error) setError(result.error);
-    else setConfirmEnd(false);
+    else { setConfirmEnd(false); router.refresh(); }
   }
 
   async function handleSet(e: { currentTarget: HTMLFormElement; preventDefault(): void }) {
@@ -53,6 +55,7 @@ export default function FeaturedManager({ current, pets }: { current: CurrentFea
     const result = await setFeatured(new FormData(e.currentTarget));
     setIsPending(false);
     if (result.error) setError(result.error);
+    else router.refresh();
   }
 
   return (

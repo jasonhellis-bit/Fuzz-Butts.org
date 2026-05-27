@@ -93,6 +93,7 @@ export async function createPet(formData: FormData): Promise<{ error?: string }>
   });
 
   revalidatePath("/admin/manage/cats");
+  revalidatePath("/admin/manage/featured");
   return {};
 }
 
@@ -164,6 +165,7 @@ export async function updatePet(formData: FormData): Promise<{ error?: string }>
   });
 
   revalidatePath("/admin/manage/cats");
+  revalidatePath("/admin/manage/featured");
   return {};
 }
 
@@ -256,6 +258,7 @@ export async function removePet(formData: FormData): Promise<{ error?: string }>
   });
 
   revalidatePath("/admin/manage/cats");
+  revalidatePath("/admin/manage/featured");
   return {};
 }
 
