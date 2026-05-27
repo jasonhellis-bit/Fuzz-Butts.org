@@ -18,6 +18,7 @@ export interface Pet {
   pet_type: PetType;
   sex: PetSex;
   breed: string | null;
+  age: string | null;
   description: string | null;
   intake_date: string;
   intake_reason: IntakeReason;
@@ -29,6 +30,22 @@ export interface Pet {
   created_at: string;
   updated_at: string;
   primary_image_url?: string | null;
+  image_urls?: string[];
+}
+
+export interface PetImageData {
+  id: string;
+  storage_path: string;
+  is_primary: boolean;
+  display_order: number;
+  url: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  date_time: string;
+  description: string;
+  user_name: string | null;
 }
 
 export type UserStatus = 'active' | 'inactive' | 'suspended' | 'pending';

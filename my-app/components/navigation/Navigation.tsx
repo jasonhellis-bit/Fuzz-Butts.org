@@ -1,17 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useRef, useState, useEffect } from "react";
+import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
   const [navColor, setNavColor] = useState("#2563eb");
   const [fontColor, setFontColor] = useState("#ffffff");
   const [panelOpen, setPanelOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+  }
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -43,12 +65,18 @@ export default function Navigation() {
       className="shadow-lg">
       <div className="relative max-w-7xl mx-auto px-4 h-16">
         {/* Logo + color picker */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-3 z-10" ref={panelRef}>
+        <div
+          className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-3 z-10"
+          ref={panelRef}>
           <div className="relative group">
             <button
               onClick={() => setPanelOpen((o) => !o)}
               className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-base font-bold leading-none transition-colors opacity-60 hover:opacity-100"
-              style={{ borderColor: fontColor, color: fontColor, backgroundColor: "transparent" }}>
+              style={{
+                borderColor: fontColor,
+                color: fontColor,
+                backgroundColor: "transparent",
+              }}>
               {panelOpen ? "×" : "+"}
             </button>
             <div className="absolute left-0 top-full mt-2 z-50 hidden group-hover:block w-56 rounded-md bg-black/80 px-3 py-2 text-xs text-white shadow-lg">
@@ -57,7 +85,11 @@ export default function Navigation() {
           </div>
           <span
             className="text-2xl sm:text-4xl select-none"
-            style={{ fontFamily: "var(--font-pacifico)", color: fontColor, textShadow: "1px 1px 3px rgba(0,0,0,0.4)" }}>
+            style={{
+              fontFamily: "var(--font-pacifico)",
+              color: fontColor,
+              textShadow: "1px 1px 3px rgba(0,0,0,0.4)",
+            }}>
             Fuzz Butts
           </span>
           {panelOpen && (
@@ -124,28 +156,60 @@ export default function Navigation() {
                   className="px-4 py-2 rounded-md font-medium transition-colors"
                   style={
                     isActive
-                      ? { backgroundColor: getDarkerColor(navColor), color: fontColor }
-                      : { backgroundColor: "transparent", color: fontColor, transition: "background-color 0.2s" }
+                      ? {
+                          backgroundColor: getDarkerColor(navColor),
+                          color: fontColor,
+                        }
+                      : {
+                          backgroundColor: "transparent",
+                          color: fontColor,
+                          transition: "background-color 0.2s",
+                        }
                   }
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = getLighterColor(navColor);
+                      (
+                        e.currentTarget as HTMLAnchorElement
+                      ).style.backgroundColor = getLighterColor(navColor);
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
-                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
+                      (
+                        e.currentTarget as HTMLAnchorElement
+                      ).style.backgroundColor = "transparent";
                     }
                   }}>
                   {item.label}
                 </Link>
               );
             })}
+            {isLoggedIn && (
+              <Link
+                href="/admin/manage/home"
+                className="px-4 py-2 rounded-md font-medium transition-colors"
+                style={{
+                  backgroundColor: pathname.startsWith("/admin") ? getDarkerColor(navColor) : "transparent",
+                  color: fontColor,
+                }}
+                onMouseEnter={(e) => {
+                  if (!pathname.startsWith("/admin")) {
+                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = getLighterColor(navColor);
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!pathname.startsWith("/admin")) {
+                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
+                  }
+                }}>
+                Admin
+              </Link>
+            )}
           </div>
         </div>
 
-        {/* Desktop donate button */}
-        <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2">
+        {/* Desktop right side */}
+        <div className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 items-center gap-3">
           <div className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-3 py-2">
             <span
               className="text-xs font-medium uppercase tracking-wide"
@@ -165,6 +229,39 @@ export default function Navigation() {
               <span className="sr-only">PayPal</span>
             </a>
           </div>
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-md font-medium transition-colors"
+              style={{ color: fontColor }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  getLighterColor(navColor);
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "transparent";
+              }}>
+              <LogOut size={18} />
+              <span className="text-sm">Logout</span>
+            </button>
+          ) : (
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-md font-medium transition-colors"
+              style={{ color: fontColor }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                  getLighterColor(navColor);
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                  "transparent";
+              }}>
+              <LogIn size={18} />
+              <span className="text-sm">Login</span>
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger button */}
@@ -194,13 +291,48 @@ export default function Navigation() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-4 py-2 rounded-md font-medium"
                   style={{
-                    backgroundColor: isActive ? getDarkerColor(navColor) : "transparent",
+                    backgroundColor: isActive
+                      ? getDarkerColor(navColor)
+                      : "transparent",
                     color: fontColor,
                   }}>
                   {item.label}
                 </Link>
               );
             })}
+            {isLoggedIn && (
+              <Link
+                href="/admin/manage/home"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 rounded-md font-medium"
+                style={{
+                  backgroundColor: pathname.startsWith("/admin") ? getDarkerColor(navColor) : "transparent",
+                  color: fontColor,
+                }}>
+                Admin
+              </Link>
+            )}
+            {isLoggedIn ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="mt-2 flex items-center gap-2 px-4 py-2 rounded-md font-medium"
+                style={{ color: fontColor }}>
+                <LogOut size={18} />
+                <span className="text-sm font-medium">Logout</span>
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-2 flex items-center gap-2 px-4 py-2 rounded-md font-medium"
+                style={{ color: fontColor }}>
+                <LogIn size={18} />
+                <span className="text-sm font-medium">Login</span>
+              </Link>
+            )}
             <a
               href="https://www.paypal.com/donate/?hosted_button_id=P2HJJE69NEKRG"
               target="_blank"

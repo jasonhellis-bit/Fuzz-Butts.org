@@ -72,6 +72,19 @@ export async function updateUser(formData: FormData): Promise<{ error?: string }
   return {};
 }
 
+export async function changePassword(userId: string, newPassword: string): Promise<{ error?: string }> {
+  if (!newPassword || newPassword.length < 8) return { error: "Password must be at least 8 characters." };
+
+  const adminClient = createAdminClient();
+
+  const { error } = await adminClient.auth.admin.updateUserById(userId, { password: newPassword });
+  if (error) return { error: error.message };
+
+  await insertAuditLog(adminClient, userId, "Password changed by admin");
+
+  return {};
+}
+
 export async function createUser(formData: FormData): Promise<{ error?: string }> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

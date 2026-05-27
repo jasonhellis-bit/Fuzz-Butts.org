@@ -1,7 +1,7 @@
 "use client";
 import { User } from "@/types/types";
 import { useState, useTransition } from "react";
-import { updateUser } from "@/app/admin/manage/users/actions";
+import { updateUser, changePassword } from "@/app/admin/manage/users/actions";
 
 const AVAILABLE_ROLES = ["admin", "volunteer"] as const;
 
@@ -14,6 +14,12 @@ export default function ManageUserCard({ user }: { user: User }) {
   const [phoneValue, setPhoneValue] = useState(user.phone ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [isPasswordPending, startPasswordTransition] = useTransition();
 
   function formatPhone(raw: string) {
     let digits = raw.replace(/\D/g, "");
@@ -40,6 +46,27 @@ export default function ManageUserCard({ user }: { user: User }) {
         setError(result.error);
       } else {
         setIsEditing(false);
+      }
+    });
+  }
+
+  function handlePasswordSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordSuccess(false);
+    if (newPassword !== confirmPassword) {
+      setPasswordError("Passwords do not match.");
+      return;
+    }
+    startPasswordTransition(async () => {
+      const result = await changePassword(user.id, newPassword);
+      if (result.error) {
+        setPasswordError(result.error);
+      } else {
+        setPasswordSuccess(true);
+        setNewPassword("");
+        setConfirmPassword("");
+        setShowPasswordForm(false);
       }
     });
   }
@@ -205,11 +232,62 @@ export default function ManageUserCard({ user }: { user: User }) {
         <p className="text-gray-700 mb-4 mt-2">No audit trail available.</p>
       )}
 
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
-        onClick={() => setIsEditing(true)}>
-        Edit User
-      </button>
+      <div className="flex gap-2 mt-4">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={() => setIsEditing(true)}>
+          Edit User
+        </button>
+        <button
+          className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
+          onClick={() => { setShowPasswordForm((s) => !s); setPasswordError(null); setPasswordSuccess(false); }}>
+          Change Password
+        </button>
+      </div>
+
+      {showPasswordForm && (
+        <form onSubmit={handlePasswordSubmit} className="mt-4 border border-gray-200 rounded p-4 bg-gray-50 max-w-sm">
+          <p className="text-sm font-medium text-gray-700 mb-3">Set new password for {fullName}</p>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={8}
+              className="border p-2 w-full rounded text-sm"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={8}
+              className="border p-2 w-full rounded text-sm"
+            />
+          </div>
+          {passwordError && <p className="text-red-500 text-sm mb-3">{passwordError}</p>}
+          {passwordSuccess && <p className="text-green-600 text-sm mb-3">Password updated successfully.</p>}
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={isPasswordPending}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm disabled:opacity-50">
+              {isPasswordPending ? "Saving…" : "Save Password"}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setShowPasswordForm(false); setPasswordError(null); setNewPassword(""); setConfirmPassword(""); }}
+              className="border border-gray-300 px-4 py-2 rounded text-sm hover:bg-gray-100">
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

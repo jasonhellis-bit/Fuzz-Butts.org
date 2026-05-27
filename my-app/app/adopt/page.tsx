@@ -2,24 +2,32 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import CatCard from "@/components/adopt/CatCard";
 import { Pet } from "@/types/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdoptPage() {
   const adminClient = createAdminClient();
 
   const { data: pets } = await adminClient
     .from("pets")
-    .select("*, pet_images(storage_path, is_primary)")
+    .select("*, pet_images(storage_path, is_primary, display_order)")
     .in("status", ["available for adoption", "pending adoption"])
     .order("created_at", { ascending: false });
 
   const petsWithImages: Pet[] = (pets ?? []).map((pet: any) => {
-    const primary = (pet.pet_images as any[])?.find((img) => img.is_primary);
-    let primary_image_url: string | null = null;
-    if (primary?.storage_path) {
-      const { data } = adminClient.storage.from("pet-images").getPublicUrl(primary.storage_path);
-      primary_image_url = data.publicUrl;
-    }
+    const images = (pet.pet_images as any[]) ?? [];
+    const sorted = [...images].sort((a, b) => {
+      if (a.is_primary) return -1;
+      if (b.is_primary) return 1;
+      return a.display_order - b.display_order;
+    });
+    const primary_image_url = sorted[0]?.storage_path
+      ? adminClient.storage.from("pet-images").getPublicUrl(sorted[0].storage_path).data.publicUrl
+      : null;
+    const image_urls = sorted.map(
+      (img) => adminClient.storage.from("pet-images").getPublicUrl(img.storage_path).data.publicUrl
+    );
     const { pet_images, ...petData } = pet;
-    return { ...petData, primary_image_url };
+    return { ...petData, primary_image_url, image_urls };
   });
 
   return (

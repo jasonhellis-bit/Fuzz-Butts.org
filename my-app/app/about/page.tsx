@@ -6,14 +6,14 @@ export default function About() {
           <div className="mx-auto flex w-full justify-center px-2 sm:px-0">
             <div className="w-full max-w-5xl">
               <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
-                <div className="w-full sm:w-1/3">
+                <div className="w-full sm:w-1/6">
                   <img
                     src="/fuzz_butts_founder.jpg"
                     alt="Fuzz Butts founder"
                     className="h-auto w-full rounded-3xl object-cover shadow-xl"
                   />
                 </div>
-                <div className="w-full sm:w-2/3">
+                <div className="w-full sm:w-5/6">
                   <h1 className="text-4xl font-bold mb-4">
                     Amelia Duncan, Founder
                   </h1>
@@ -67,6 +67,49 @@ export default function About() {
                     work matters. Even the smallest act of kindness can
                     completely change an animal’s life. In return, these cats
                     have changed mine in ways I never could have imagined.
+                  </p>
+                </div>
+              </div>
+
+              <hr className="my-12 border-gray-200" />
+
+              <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
+                <div className="w-full sm:w-1/6">
+                  <div className="h-auto w-full rounded-3xl bg-gray-200 shadow-xl aspect-[3/4] flex items-center justify-center text-gray-400 text-sm">
+                    Photo coming soon
+                  </div>
+                </div>
+                <div className="w-full sm:w-5/6">
+                  <h1 className="text-4xl font-bold mb-4">
+                    Jason Ellis, Chief Technology Officer
+                  </h1>
+                  <p className="text-lg text-gray-700 mb-6">
+                    There's a particular kind of magic in loving cats. It lives
+                    in the moment a purring body finds its way into your lap
+                    uninvited, as if you were always just a warm place waiting
+                    to be chosen. Cats don't love easily, and that's exactly
+                    what makes it mean so much when they do.
+                  </p>
+                  <p className="text-lg text-gray-700 mb-6">
+                    A cat's slow blink is a whole language. A headbutt against
+                    your shin, a tiny offering. The way they curl into
+                    impossible circles and sleep like the world is perfectly
+                    safe, because you're in it.
+                  </p>
+                  <p className="text-lg text-gray-700 mb-6">
+                    To love cats is to appreciate the small things: the
+                    ridiculous chirp at a bird through the window, the
+                    theatrical flop onto the floor demanding attention, the 3am
+                    zoom across the apartment for reasons only they understand.
+                  </p>
+                  <p className="text-lg text-gray-700 mb-6">
+                    They are soft chaos wrapped in fur, and somehow they make
+                    everywhere feel like home. That love runs so deep that it
+                    inspired more than just admiration from afar. It inspired
+                    action. I built this website to support Fuzz Butts and its
+                    founder, Amelia, because cats deserve a space made with the
+                    same care and devotion they quietly inspire in us every
+                    single day.
                   </p>
                 </div>
               </div>
