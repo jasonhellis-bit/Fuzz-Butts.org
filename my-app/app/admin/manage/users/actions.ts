@@ -20,7 +20,8 @@ export async function updateUser(formData: FormData): Promise<{ error?: string }
   const title = (formData.get("title") as string) || null;
   const email = formData.get("email") as string;
   const rawPhone = formData.get("phone") as string;
-  const phone = rawPhone ? `+1${rawPhone.replace(/\D/g, "")}` : "";
+  const digits = rawPhone ? rawPhone.replace(/\D/g, "") : "";
+  const phone = digits ? `+1${digits.startsWith("1") && digits.length === 11 ? digits.slice(1) : digits}` : "";
   const roles = formData.get("roles") as string;
   const status = formData.get("status") as UserStatus;
 
