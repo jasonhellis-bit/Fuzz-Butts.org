@@ -1,10 +1,12 @@
-import { sampleCats } from "@/components/helpers/tempData";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export default async function AdminHome() {
   const adminClient = createAdminClient();
   const { count: userCount } = await adminClient
     .from("users")
+    .select("*", { count: "exact", head: true });
+  const { count: catCount } = await adminClient
+    .from("pets")
     .select("*", { count: "exact", head: true });
 
   return (
@@ -25,7 +27,7 @@ export default async function AdminHome() {
         </div>
         <div className="bg-white shadow-md rounded p-4">
           <h2 className="text-2xl font-bold mb-2">Total Cats</h2>
-          <p className="text-gray-600 mb-2">{sampleCats.length}</p>
+          <p className="text-gray-600 mb-2">{catCount ?? 0}</p>
         </div>
       </div>
     </div>
