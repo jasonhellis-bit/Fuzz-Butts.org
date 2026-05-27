@@ -13,7 +13,7 @@ export default function FeaturedAdoption() {
         <img
           src="/cats/luna-1.jpg"
           alt="Luna the cat"
-          className="mx-auto mt-6 h-90 w-90 rounded-full object-cover"
+          className="mx-auto mt-6 w-48 h-48 sm:w-72 sm:h-72 rounded-full object-cover"
           loading="eager"
         />
         <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">

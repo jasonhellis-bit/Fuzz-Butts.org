@@ -8,7 +8,7 @@ export default function Contact() {
           <div className="mx-auto flex w-full justify-center px-2 sm:px-0">
             <div className="w-full max-w-5xl">
               <h1 className="text-4xl font-bold mb-4">Locate Us</h1>
-              <div className="relative w-full h-96">
+              <div className="relative w-full h-56 sm:h-96">
                 <Image
                   src="/temp_map.jpg"
                   alt="Map showing Fuzz Butts location at 1521 W Dobbins Rd, Phoenix, AZ 85041"

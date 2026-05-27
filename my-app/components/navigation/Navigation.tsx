@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Navigation() {
   const pathname = usePathname();
   const [navColor, setNavColor] = useState("#2563eb");
   const [fontColor, setFontColor] = useState("#ffffff");
   const [panelOpen, setPanelOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
@@ -39,8 +41,9 @@ export default function Navigation() {
     <nav
       style={{ backgroundColor: navColor, color: fontColor }}
       className="shadow-lg">
-      <div className="relative max-w-7xl mx-auto px-4">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-3" ref={panelRef}>
+      <div className="relative max-w-7xl mx-auto px-4 h-16">
+        {/* Logo + color picker */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-3 z-10" ref={panelRef}>
           <div className="relative group">
             <button
               onClick={() => setPanelOpen((o) => !o)}
@@ -53,7 +56,7 @@ export default function Navigation() {
             </div>
           </div>
           <span
-            className="text-4xl select-none"
+            className="text-2xl sm:text-4xl select-none"
             style={{ fontFamily: "var(--font-pacifico)", color: fontColor, textShadow: "1px 1px 3px rgba(0,0,0,0.4)" }}>
             Fuzz Butts
           </span>
@@ -108,7 +111,41 @@ export default function Navigation() {
             </div>
           )}
         </div>
-        <div className="absolute right-0 top-1/2 -translate-y-1/2">
+
+        {/* Desktop nav items */}
+        <div className="hidden md:flex items-center justify-center h-full">
+          <div className="flex space-x-1 items-center">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="px-4 py-2 rounded-md font-medium transition-colors"
+                  style={
+                    isActive
+                      ? { backgroundColor: getDarkerColor(navColor), color: fontColor }
+                      : { backgroundColor: "transparent", color: fontColor, transition: "background-color 0.2s" }
+                  }
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = getLighterColor(navColor);
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
+                    }
+                  }}>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Desktop donate button */}
+        <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2">
           <div className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-3 py-2">
             <span
               className="text-xs font-medium uppercase tracking-wide"
@@ -129,48 +166,58 @@ export default function Navigation() {
             </a>
           </div>
         </div>
-        <div className="flex items-center justify-center h-16">
-          <div className="flex space-x-1 items-center">
+
+        {/* Mobile hamburger button */}
+        <div className="flex md:hidden items-center justify-end h-full">
+          <button
+            onClick={() => setMobileMenuOpen((o) => !o)}
+            className="p-2 rounded-md"
+            style={{ color: fontColor }}
+            aria-label="Toggle menu">
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown menu */}
+      {mobileMenuOpen && (
+        <div
+          style={{ backgroundColor: navColor }}
+          className="md:hidden border-t border-white/20 px-4 pb-4">
+          <div className="flex flex-col space-y-1 pt-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors`}
-                  style={
-                    isActive
-                      ? {
-                          backgroundColor: getDarkerColor(navColor),
-                          color: fontColor,
-                        }
-                      : {
-                          backgroundColor: "transparent",
-                          color: fontColor,
-                          transition: "background-color 0.2s",
-                        }
-                  }
-                  onMouseEnter={(e) => {
-                    if (!isActive) {
-                      (
-                        e.currentTarget as HTMLAnchorElement
-                      ).style.backgroundColor = getLighterColor(navColor);
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) {
-                      (
-                        e.currentTarget as HTMLAnchorElement
-                      ).style.backgroundColor = "transparent";
-                    }
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2 rounded-md font-medium"
+                  style={{
+                    backgroundColor: isActive ? getDarkerColor(navColor) : "transparent",
+                    color: fontColor,
                   }}>
                   {item.label}
                 </Link>
               );
             })}
+            <a
+              href="https://www.paypal.com/donate/?hosted_button_id=P2HJJE69NEKRG"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-4 py-2"
+              style={{ color: fontColor }}>
+              <span className="text-sm font-medium">Donate via PayPal</span>
+              <img
+                src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png"
+                alt="PayPal"
+                className="h-5 w-auto"
+              />
+            </a>
           </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

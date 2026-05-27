@@ -8,9 +8,9 @@ export default function ManageLayout({
 }) {
   return (
     <UserProvider>
-      <div className="flex min-h-screen">
+      <div className="flex flex-col md:flex-row min-h-screen">
         <ManageNav />
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-4 md:p-8">{children}</main>
       </div>
     </UserProvider>
   );
