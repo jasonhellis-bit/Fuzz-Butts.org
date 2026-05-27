@@ -7,20 +7,6 @@ export default function Contact() {
         <div className="w-full flex-1 pt-8">
           <div className="mx-auto flex w-full justify-center px-2 sm:px-0">
             <div className="w-full max-w-5xl">
-              <h1 className="text-4xl font-bold mb-4">Locate Us</h1>
-              <div className="relative w-full h-56 sm:h-96">
-                <Image
-                  src="/temp_map.jpg"
-                  alt="Map showing Fuzz Butts location at 1521 W Dobbins Rd, Phoenix, AZ 85041"
-                  fill
-                  className="object-cover rounded"
-                />
-              </div>
-              <p className="text-lg text-gray-700 mt-6 mb-6">
-                Our shelter is located at 1521 W Dobbins Rd, Phoenix, AZ 85041.
-                We are open for visits from 10am to 6pm every day. We would love
-                to see you and introduce you to our adorable cats!
-              </p>
               <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
               <p className="text-lg text-gray-700 mb-6">
                 If you have any questions or inquiries, please feel free to
@@ -29,8 +15,16 @@ export default function Contact() {
               </p>
               <p className="text-lg text-gray-700 mb-6">
                 You can contact us via email at{" "}
-                <a href="mailto:info@fuzzbutts.org" className="text-blue-500">
-                  info@fuzzbutts.org
+                <a
+                  href="mailto:fuzzbuttinc@gmail.com"
+                  className="text-blue-500">
+                  fuzzbuttinc@gmail.com
+                </a>
+              </p>
+              <p className="text-lg text-gray-700 mb-6">
+                You can contact us via phone at{" "}
+                <a href="tel:555-555-5555" className="text-blue-500">
+                  (555) 555-5555
                 </a>
               </p>
             </div>
