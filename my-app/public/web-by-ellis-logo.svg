@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80" role="img">
+  <title>Web by Ellis</title>
+  <desc>Compact bold modern logo for Web by Ellis with stacked wordmark and abstract slash mark</desc>
+
+  <!-- Abstract mark: three stacked slashes -->
+  <polygon points="0,0 48,0 36,20 0,20" fill="#FF5C35"/>
+  <polygon points="8,26 56,26 44,46 8,46" fill="#FF5C35" opacity="0.65"/>
+  <polygon points="16,52 52,52 44,66 16,66" fill="#FF5C35" opacity="0.35"/>
+
+  <!-- "WEB BY" small spaced label -->
+  <text x="72" y="22"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+    font-size="16" font-weight="400" letter-spacing="5"
+    fill="#FF5C35">WEB BY</text>
+
+  <!-- "Ellis" large dominant wordmark -->
+  <text x="70" y="68"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+    font-size="52" font-weight="500" letter-spacing="-2"
+    fill="#0D0D0D">Ellis</text>
+
+  <!-- Underline accent -->
+  <rect x="72" y="74" width="162" height="3" rx="1.5" fill="#FF5C35"/>
+
+</svg>
