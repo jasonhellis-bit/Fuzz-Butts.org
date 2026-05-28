@@ -44,11 +44,17 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <footer className="bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-500">
           <div className="relative flex items-center px-6">
-            <img
-              src="/web-by-ellis-logo.svg"
-              alt="Web by Ellis Logo"
-              className="h-16 w-auto shrink-0"
-            />
+            <a
+              href="https://www.linkedin.com/company/web-by-ellis/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0">
+              <img
+                src="/web-by-ellis-logo.svg"
+                alt="Web by Ellis Logo"
+                className="h-16 w-auto"
+              />
+            </a>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <p>
                 &copy; {new Date().getFullYear()} Fuzz Butts. All rights
