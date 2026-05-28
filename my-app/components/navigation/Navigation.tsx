@@ -189,17 +189,23 @@ export default function Navigation() {
                 href="/admin/manage/home"
                 className="px-4 py-2 rounded-md font-medium transition-colors"
                 style={{
-                  backgroundColor: pathname.startsWith("/admin") ? getDarkerColor(navColor) : "transparent",
+                  backgroundColor: pathname.startsWith("/admin")
+                    ? getDarkerColor(navColor)
+                    : "transparent",
                   color: fontColor,
                 }}
                 onMouseEnter={(e) => {
                   if (!pathname.startsWith("/admin")) {
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = getLighterColor(navColor);
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = getLighterColor(navColor);
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!pathname.startsWith("/admin")) {
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "transparent";
                   }
                 }}>
                 Admin
@@ -306,7 +312,9 @@ export default function Navigation() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 rounded-md font-medium"
                 style={{
-                  backgroundColor: pathname.startsWith("/admin") ? getDarkerColor(navColor) : "transparent",
+                  backgroundColor: pathname.startsWith("/admin")
+                    ? getDarkerColor(navColor)
+                    : "transparent",
                   color: fontColor,
                 }}>
                 Admin
@@ -325,7 +333,7 @@ export default function Navigation() {
               </button>
             ) : (
               <Link
-                href="/login"
+                href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-2 flex items-center gap-2 px-4 py-2 rounded-md font-medium"
                 style={{ color: fontColor }}>

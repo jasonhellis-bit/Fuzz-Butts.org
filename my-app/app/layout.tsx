@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Pacifico } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation/Navigation";
 import FuzzButtsBanner from "@/components/navigation/FuzzButtsBanner";
+import Footer from "@/components/navigation/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,30 +43,7 @@ export default function RootLayout({
         <Navigation />
         <FuzzButtsBanner />
         <main className="flex-1">{children}</main>
-        <footer className="bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-500">
-          <div className="relative flex items-center px-6">
-            <a
-              href="https://www.linkedin.com/company/web-by-ellis/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0">
-              <img
-                src="/web-by-ellis-logo.svg"
-                alt="Web by Ellis Logo"
-                className="h-16 w-auto"
-              />
-            </a>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <p>
-                &copy; {new Date().getFullYear()} Fuzz Butts. All rights
-                reserved.
-              </p>
-              <p>
-                Fuzz Butts is a registered 501(c)(3) charitable organization.
-              </p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

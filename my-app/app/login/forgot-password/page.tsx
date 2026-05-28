@@ -21,7 +21,8 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
     const supabase = createClient();
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email);
+    const { error: resetError } =
+      await supabase.auth.resetPasswordForEmail(email);
 
     setLoading(false);
     if (resetError) {
@@ -39,10 +40,11 @@ export default function ForgotPasswordPage() {
           <div className="text-4xl mb-4">📬</div>
           <h1 className="text-2xl font-bold mb-2">Check your email</h1>
           <p className="text-gray-500 mb-6">
-            If an account exists for <span className="font-medium text-gray-700">{email}</span>,
-            you'll receive a password reset link shortly.
+            If an account exists for{" "}
+            <span className="font-medium text-gray-700">{email}</span>, you'll
+            receive a password reset link shortly.
           </p>
-          <Link href="/login" className="text-sm text-blue-600 hover:underline">
+          <Link href="/admin" className="text-sm text-blue-600 hover:underline">
             Back to sign in
           </Link>
         </div>
@@ -60,7 +62,9 @@ export default function ForgotPasswordPage() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -85,7 +89,7 @@ export default function ForgotPasswordPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Remember your password?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
+          <Link href="/admin" className="text-blue-600 hover:underline">
             Sign in
           </Link>
         </p>
