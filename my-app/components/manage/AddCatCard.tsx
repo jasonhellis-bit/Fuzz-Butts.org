@@ -109,6 +109,10 @@ export default function AddCatCard() {
             <input name="age" className={inputCls} placeholder="e.g. About three months" />
           </div>
           <div>
+            <label className={labelCls}>Weight</label>
+            <input name="weight" className={inputCls} placeholder="e.g. About 5 lbs" />
+          </div>
+          <div>
             <label className={labelCls}>Intake Date *</label>
             <input name="intake_date" type="date" required className={inputCls} />
           </div>

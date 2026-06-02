@@ -116,7 +116,7 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
             </span>
           </div>
           <p className="text-sm text-gray-500 mb-1">{titleCase(pet.pet_type)}{pet.breed ? ` · ${pet.breed}` : ""}</p>
-          <p className="text-sm text-gray-500 mb-1">{titleCase(pet.sex)}{pet.age ? ` · ${pet.age}` : ""}</p>
+          <p className="text-sm text-gray-500 mb-1">{titleCase(pet.sex)}{pet.age ? ` · ${pet.age}` : ""}{pet.weight ? ` · ${pet.weight}` : ""}</p>
           <p className="text-sm text-gray-500 mb-1">Intake: {formatDate(pet.intake_date)}</p>
           <p className="text-sm text-gray-500 mb-3">{pet.spayed_neutered ? "✓ Spayed/Neutered" : "Not spayed/neutered"}</p>
           {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
@@ -247,6 +247,10 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
           <div>
             <label className={labelCls}>Age</label>
             <input name="age" defaultValue={pet.age ?? ""} className={inputCls} placeholder="e.g. About three months" />
+          </div>
+          <div>
+            <label className={labelCls}>Weight</label>
+            <input name="weight" defaultValue={pet.weight ?? ""} className={inputCls} placeholder="e.g. About 5 lbs" />
           </div>
           <div>
             <label className={labelCls}>Intake Date *</label>

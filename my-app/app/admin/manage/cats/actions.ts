@@ -17,6 +17,7 @@ const FIELD_LABELS: Record<string, string> = {
   sex:                "Sex",
   breed:              "Breed",
   age:                "Age",
+  weight:             "Weight",
   status:             "Status",
   intake_date:        "Intake date",
   intake_reason:      "Intake reason",
@@ -58,6 +59,7 @@ export async function createPet(formData: FormData): Promise<{ error?: string }>
   const sex = formData.get("sex") as string;
   const breed = (formData.get("breed") as string) || null;
   const age = (formData.get("age") as string) || null;
+  const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
@@ -70,7 +72,7 @@ export async function createPet(formData: FormData): Promise<{ error?: string }>
 
   const { data: pet, error: petError } = await adminClient
     .from("pets")
-    .insert({ name, pet_type, sex, breed, age, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason })
+    .insert({ name, pet_type, sex, breed, age, weight, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason })
     .select("id")
     .single();
 
@@ -107,6 +109,7 @@ export async function updatePet(formData: FormData): Promise<{ error?: string }>
   const sex = formData.get("sex") as string;
   const breed = (formData.get("breed") as string) || null;
   const age = (formData.get("age") as string) || null;
+  const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
@@ -119,7 +122,7 @@ export async function updatePet(formData: FormData): Promise<{ error?: string }>
 
   const { data: existing, error: fetchError } = await adminClient
     .from("pets")
-    .select("name, pet_type, sex, breed, age, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason")
+    .select("name, pet_type, sex, breed, age, weight, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason")
     .eq("id", id)
     .single();
 
@@ -127,7 +130,7 @@ export async function updatePet(formData: FormData): Promise<{ error?: string }>
 
   const { error: petError } = await adminClient
     .from("pets")
-    .update({ name, pet_type, sex, breed, age, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason })
+    .update({ name, pet_type, sex, breed, age, weight, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason })
     .eq("id", id);
 
   if (petError) return { error: petError.message };
@@ -155,7 +158,7 @@ export async function updatePet(formData: FormData): Promise<{ error?: string }>
 
   const auditDescription = buildUpdateDescription(
     existing as Record<string, unknown>,
-    { name, pet_type, sex, breed, age, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason }
+    { name, pet_type, sex, breed, age, weight, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason }
   );
 
   await adminClient.from("pet_audit_log").insert({

@@ -19,6 +19,7 @@ export interface Pet {
   sex: PetSex;
   breed: string | null;
   age: string | null;
+  weight: string | null;
   description: string | null;
   intake_date: string;
   intake_reason: IntakeReason;
