@@ -2,7 +2,9 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic();
 
-const ANALYZE_PROMPT = `You are helping staff at an animal shelter catalog a new animal. Look at this photo and provide your best estimates for the following fields. Return ONLY a JSON object with these exact keys:
+function buildPrompt(sex: "male" | "female") {
+  const pronoun = sex === "male" ? "he/him/his" : "she/her/her";
+  return `You are helping staff at an animal shelter catalog a new animal. Look at this photo and provide your best estimates for the following fields. The animal is ${sex} — use ${pronoun} pronouns in the description. Return ONLY a JSON object with these exact keys:
 
 {
   "name": "A sweet, fitting name for this animal (be creative but appropriate for a shelter)",
@@ -13,10 +15,12 @@ const ANALYZE_PROMPT = `You are helping staff at an animal shelter catalog a new
 }
 
 If you cannot determine something from the photo, make a reasonable guess rather than leaving it blank. Return ONLY the JSON object, no other text.`;
+}
 
 export async function POST(request: Request) {
   const formData = await request.formData();
   const image = formData.get("image") as File | null;
+  const sex = (formData.get("sex") as string) === "female" ? "female" : "male";
 
   if (!image) {
     return Response.json({ error: "No image provided" }, { status: 400 });
@@ -36,7 +40,7 @@ export async function POST(request: Request) {
     system: [
       {
         type: "text",
-        text: ANALYZE_PROMPT,
+        text: buildPrompt(sex),
         cache_control: { type: "ephemeral" },
       },
     ],
