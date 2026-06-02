@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2, Sparkles } from "lucide-react";
 import { PetType, PetSex, PetStatus, IntakeReason, DispositionReason } from "@/types/types";
 import { createPet } from "@/app/admin/manage/cats/actions";
 import PetImageInput from "@/components/manage/PetImageInput";
@@ -18,13 +19,21 @@ function titleCase(s: string) {
 const inputCls = "border rounded p-2 w-full text-sm";
 const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
+const defaultFields = { name: "", breed: "", age: "", weight: "", description: "" };
+
 export default function AddCatCard() {
   const [isOpen, setIsOpen] = useState(false);
   const [spayedNeutered, setSpayedNeutered] = useState(false);
   const [hasDisposition, setHasDisposition] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fields, setFields] = useState(defaultFields);
+
+  function setField(key: keyof typeof defaultFields, value: string) {
+    setFields((f) => ({ ...f, [key]: value }));
+  }
 
   function reset() {
     setIsOpen(false);
@@ -32,6 +41,34 @@ export default function AddCatCard() {
     setHasDisposition(false);
     setImageFile(null);
     setError(null);
+    setFields(defaultFields);
+  }
+
+  async function handleAutofill() {
+    if (!imageFile) return;
+    setIsAnalyzing(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.set("image", imageFile);
+      const res = await fetch("/api/analyze-pet", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.error) {
+        setError(`AI autofill failed: ${data.error}`);
+      } else {
+        setFields({
+          name: data.name ?? "",
+          breed: data.breed ?? "",
+          age: data.age ?? "",
+          weight: data.weight ?? "",
+          description: data.description ?? "",
+        });
+      }
+    } catch {
+      setError("AI autofill failed. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   }
 
   async function handleSubmit(e: { currentTarget: HTMLFormElement; preventDefault(): void }) {
@@ -46,7 +83,6 @@ export default function AddCatCard() {
     if (result.error) {
       setError(result.error);
     } else {
-      form.reset();
       reset();
     }
   }
@@ -72,15 +108,36 @@ export default function AddCatCard() {
     <div className="col-span-full bg-white rounded-lg shadow-md p-4">
       <h2 className="text-xl font-bold mb-4">Add New Pet</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+        <div className="mb-2">
           <label className={labelCls}>Photo</label>
           <PetImageInput onChange={(f) => setImageFile(f)} />
         </div>
 
+        {imageFile && (
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={handleAutofill}
+              disabled={isAnalyzing}
+              className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700 disabled:opacity-50 transition-colors">
+              {isAnalyzing
+                ? <Loader2 size={15} className="animate-spin" />
+                : <Sparkles size={15} />}
+              {isAnalyzing ? "Analyzing photo…" : "Auto-fill with AI"}
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div>
             <label className={labelCls}>Name *</label>
-            <input name="name" required className={inputCls} />
+            <input
+              name="name"
+              required
+              className={inputCls}
+              value={fields.name}
+              onChange={(e) => setField("name", e.target.value)}
+            />
           </div>
           <div>
             <label className={labelCls}>Status *</label>
@@ -102,15 +159,33 @@ export default function AddCatCard() {
           </div>
           <div>
             <label className={labelCls}>Breed</label>
-            <input name="breed" className={inputCls} placeholder="e.g. Domestic Shorthair" />
+            <input
+              name="breed"
+              className={inputCls}
+              placeholder="e.g. Domestic Shorthair"
+              value={fields.breed}
+              onChange={(e) => setField("breed", e.target.value)}
+            />
           </div>
           <div>
             <label className={labelCls}>Age</label>
-            <input name="age" className={inputCls} placeholder="e.g. About three months" />
+            <input
+              name="age"
+              className={inputCls}
+              placeholder="e.g. About three months"
+              value={fields.age}
+              onChange={(e) => setField("age", e.target.value)}
+            />
           </div>
           <div>
             <label className={labelCls}>Weight</label>
-            <input name="weight" className={inputCls} placeholder="e.g. About 5 lbs" />
+            <input
+              name="weight"
+              className={inputCls}
+              placeholder="e.g. About 5 lbs"
+              value={fields.weight}
+              onChange={(e) => setField("weight", e.target.value)}
+            />
           </div>
           <div>
             <label className={labelCls}>Intake Date *</label>
@@ -144,7 +219,13 @@ export default function AddCatCard() {
 
         <div className="mt-4">
           <label className={labelCls}>Description</label>
-          <textarea name="description" rows={3} className={inputCls} />
+          <textarea
+            name="description"
+            rows={3}
+            className={inputCls}
+            value={fields.description}
+            onChange={(e) => setField("description", e.target.value)}
+          />
         </div>
 
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">

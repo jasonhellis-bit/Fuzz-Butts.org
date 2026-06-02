@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2, Sparkles } from "lucide-react";
 import { Pet, PetType, PetSex, PetStatus, IntakeReason, DispositionReason, AuditLogEntry } from "@/types/types";
 import { updatePet, removePet, deletePhoto, getPetAuditLog } from "@/app/admin/manage/cats/actions";
 import PetImageInput from "@/components/manage/PetImageInput";
@@ -40,6 +41,16 @@ function formatDateTime(dt: string) {
   });
 }
 
+function petFields(pet: Pet) {
+  return {
+    name: pet.name,
+    breed: pet.breed ?? "",
+    age: pet.age ?? "",
+    weight: pet.weight ?? "",
+    description: pet.description ?? "",
+  };
+}
+
 export default function ManageCatCard({ pet }: { pet: Pet }) {
   const [isEditing, setIsEditing] = useState(false);
   const [spayedNeutered, setSpayedNeutered] = useState(pet.spayed_neutered);
@@ -47,10 +58,49 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [showRemoveForm, setShowRemoveForm] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAuditLog, setShowAuditLog] = useState(false);
   const [auditLog, setAuditLog] = useState<AuditLogEntry[] | null>(null);
   const [auditLoading, setAuditLoading] = useState(false);
+  const [fields, setFields] = useState(petFields(pet));
+
+  function setField(key: keyof ReturnType<typeof petFields>, value: string) {
+    setFields((f) => ({ ...f, [key]: value }));
+  }
+
+  async function handleAutofill() {
+    setIsAnalyzing(true);
+    setError(null);
+    try {
+      let file = imageFile;
+      if (!file && pet.primary_image_url) {
+        const res = await fetch(pet.primary_image_url);
+        const blob = await res.blob();
+        file = new File([blob], "photo.jpg", { type: blob.type || "image/jpeg" });
+      }
+      if (!file) return;
+      const fd = new FormData();
+      fd.set("image", file);
+      const res = await fetch("/api/analyze-pet", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.error) {
+        setError(`AI autofill failed: ${data.error}`);
+      } else {
+        setFields({
+          name: data.name ?? fields.name,
+          breed: data.breed ?? "",
+          age: data.age ?? "",
+          weight: data.weight ?? "",
+          description: data.description ?? "",
+        });
+      }
+    } catch {
+      setError("AI autofill failed. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
 
   async function handleToggleAuditLog() {
     if (showAuditLog) {
@@ -98,6 +148,7 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
     setImageFile(null);
     setSpayedNeutered(pet.spayed_neutered);
     setHasDisposition(!!pet.disposition_date);
+    setFields(petFields(pet));
   }
 
   if (!isEditing) {
@@ -205,7 +256,7 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
       <form onSubmit={handleUpdate}>
         <input type="hidden" name="id" value={pet.id} />
 
-        <div className="mb-4">
+        <div className="mb-2">
           <label className={labelCls}>Photo</label>
           <PetImageInput
             currentImageUrl={pet.primary_image_url}
@@ -217,10 +268,25 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
           />
         </div>
 
+        {(imageFile || pet.primary_image_url) && (
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={handleAutofill}
+              disabled={isAnalyzing}
+              className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700 disabled:opacity-50 transition-colors">
+              {isAnalyzing
+                ? <Loader2 size={15} className="animate-spin" />
+                : <Sparkles size={15} />}
+              {isAnalyzing ? "Analyzing photo…" : "Auto-fill with AI"}
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div>
             <label className={labelCls}>Name *</label>
-            <input name="name" required defaultValue={pet.name} className={inputCls} />
+            <input name="name" required className={inputCls} value={fields.name} onChange={(e) => setField("name", e.target.value)} />
           </div>
           <div>
             <label className={labelCls}>Status *</label>
@@ -242,15 +308,15 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
           </div>
           <div>
             <label className={labelCls}>Breed</label>
-            <input name="breed" defaultValue={pet.breed ?? ""} className={inputCls} placeholder="e.g. Domestic Shorthair" />
+            <input name="breed" className={inputCls} placeholder="e.g. Domestic Shorthair" value={fields.breed} onChange={(e) => setField("breed", e.target.value)} />
           </div>
           <div>
             <label className={labelCls}>Age</label>
-            <input name="age" defaultValue={pet.age ?? ""} className={inputCls} placeholder="e.g. About three months" />
+            <input name="age" className={inputCls} placeholder="e.g. About three months" value={fields.age} onChange={(e) => setField("age", e.target.value)} />
           </div>
           <div>
             <label className={labelCls}>Weight</label>
-            <input name="weight" defaultValue={pet.weight ?? ""} className={inputCls} placeholder="e.g. About 5 lbs" />
+            <input name="weight" className={inputCls} placeholder="e.g. About 5 lbs" value={fields.weight} onChange={(e) => setField("weight", e.target.value)} />
           </div>
           <div>
             <label className={labelCls}>Intake Date *</label>
@@ -279,7 +345,7 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
 
         <div className="mt-4">
           <label className={labelCls}>Description</label>
-          <textarea name="description" defaultValue={pet.description ?? ""} rows={3} className={inputCls} />
+          <textarea name="description" rows={3} className={inputCls} value={fields.description} onChange={(e) => setField("description", e.target.value)} />
         </div>
 
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
