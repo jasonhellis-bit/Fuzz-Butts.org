@@ -181,7 +181,7 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
           <div className="flex items-start justify-between gap-2 mb-2">
             <h2 className="text-xl font-bold">{pet.name}</h2>
             <span className={`text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap ${STATUS_COLORS[pet.status]}`}>
-              {titleCase(pet.status)}
+              {pet.disposition_reason ? titleCase(pet.disposition_reason) : titleCase(pet.status)}
             </span>
           </div>
           <p className="text-sm text-gray-500 mb-1">{titleCase(pet.pet_type)}{pet.breed ? ` · ${pet.breed}` : ""}</p>

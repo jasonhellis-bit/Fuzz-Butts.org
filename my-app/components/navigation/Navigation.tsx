@@ -62,7 +62,7 @@ export default function Navigation() {
   return (
     <nav
       style={{ backgroundColor: navColor, color: fontColor }}
-      className="shadow-lg">
+      className="sticky top-0 z-50 shadow-lg">
       <div className="relative max-w-7xl mx-auto px-4 h-16">
         {/* Logo + color picker */}
         <div

@@ -50,7 +50,7 @@ export default function FeaturedAdoption({ pet }: { pet: FeaturedPet | null }) {
           </p>
         )}
       </div>
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-stretch sm:justify-center">
         <div className="rounded-2xl bg-slate-100 p-4 text-left sm:w-1/2">
           <p className="text-sm font-semibold text-slate-700">Breed</p>
           <p className="mt-2 text-lg text-slate-900">{pet.breed ?? "Unknown"}</p>

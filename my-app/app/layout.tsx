@@ -38,8 +38,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}>
+      <body className="min-h-screen flex flex-col">
         <Navigation />
         <FuzzButtsBanner />
         <main className="flex-1">{children}</main>

@@ -33,6 +33,12 @@ export default async function AdoptPage() {
   return (
     <div className="min-h-screen flex flex-col items-center gap-8 py-16">
       <h1 className="text-4xl font-bold">Adopt a Cat</h1>
+      <p className="text-gray-600 text-center max-w-xl">
+        If you&apos;re interested in adopting, contact us at{" "}
+        <a href="mailto:fuzzbuttinc@gmail.com" className="text-blue-500 hover:underline">
+          fuzzbuttinc@gmail.com
+        </a>
+      </p>
       <div className="w-full max-w-7xl px-4">
         {petsWithImages.length === 0 ? (
           <div className="flex items-center justify-center">
