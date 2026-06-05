@@ -2,19 +2,17 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
-  const [navColor, setNavColor] = useState("#2563eb");
-  const [fontColor, setFontColor] = useState("#ffffff");
-  const [panelOpen, setPanelOpen] = useState(false);
+  const navColor = "#2563eb";
+  const fontColor = "#ffffff";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -64,25 +62,8 @@ export default function Navigation() {
       style={{ backgroundColor: navColor, color: fontColor }}
       className="sticky top-0 z-50 shadow-lg">
       <div className="relative max-w-7xl mx-auto px-4 h-16">
-        {/* Logo + color picker */}
-        <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-3 z-10"
-          ref={panelRef}>
-          <div className="relative group">
-            <button
-              onClick={() => setPanelOpen((o) => !o)}
-              className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-base font-bold leading-none transition-colors opacity-60 hover:opacity-100"
-              style={{
-                borderColor: fontColor,
-                color: fontColor,
-                backgroundColor: "transparent",
-              }}>
-              {panelOpen ? "×" : "+"}
-            </button>
-            <div className="absolute left-0 top-full mt-2 z-50 hidden group-hover:block w-56 rounded-md bg-black/80 px-3 py-2 text-xs text-white shadow-lg">
-              Pre Production tool for experimenting with different banner colors
-            </div>
-          </div>
+        {/* Logo */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center z-10">
           <span
             className="text-2xl sm:text-4xl select-none"
             style={{
@@ -92,56 +73,6 @@ export default function Navigation() {
             }}>
             Fuzz Butts
           </span>
-          {panelOpen && (
-            <div
-              className="absolute left-0 top-full mt-2 z-50 rounded-lg shadow-xl border border-white/20 bg-black/70 backdrop-blur-sm px-4 py-3"
-              style={{ minWidth: 200 }}>
-              <div className="flex items-center gap-4">
-                <div className="flex flex-col items-center">
-                  <label className="text-xs mb-1 text-white/80">BG</label>
-                  <input
-                    type="color"
-                    id="nav-color"
-                    value={navColor}
-                    onChange={(e) => setNavColor(e.target.value)}
-                    style={{ display: "none" }}
-                  />
-                  <label
-                    htmlFor="nav-color"
-                    className="w-20 h-10 rounded cursor-pointer border-2 flex items-center justify-center text-xs font-mono"
-                    style={{
-                      backgroundColor: navColor,
-                      borderColor: fontColor,
-                      color: fontColor,
-                    }}
-                    title="Pick background color">
-                    {navColor}
-                  </label>
-                </div>
-                <div className="flex flex-col items-center">
-                  <label className="text-xs mb-1 text-white/80">Font</label>
-                  <input
-                    type="color"
-                    id="font-color"
-                    value={fontColor}
-                    onChange={(e) => setFontColor(e.target.value)}
-                    style={{ display: "none" }}
-                  />
-                  <label
-                    htmlFor="font-color"
-                    className="w-20 h-10 rounded cursor-pointer border-2 flex items-center justify-center text-xs font-mono"
-                    style={{
-                      backgroundColor: fontColor,
-                      borderColor: navColor,
-                      color: navColor,
-                    }}
-                    title="Pick font color">
-                    {fontColor}
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Desktop nav items */}
