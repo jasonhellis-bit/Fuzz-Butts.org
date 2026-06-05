@@ -21,12 +21,18 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
     const supabase = createClient();
-    const { error: resetError } =
-      await supabase.auth.resetPasswordForEmail(email);
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+      email,
+      { redirectTo: `${window.location.origin}/auth/callback?next=/login/reset-password` }
+    );
 
     setLoading(false);
     if (resetError) {
-      setError(resetError.message);
+      if (resetError.message.toLowerCase().includes("rate limit")) {
+        setError("Too many requests. Please wait a few minutes before trying again.");
+      } else {
+        setError(resetError.message);
+      }
       return;
     }
 
