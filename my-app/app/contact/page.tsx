@@ -21,12 +21,6 @@ export default function Contact() {
                   fuzzbuttinc@gmail.com
                 </a>
               </p>
-              <p className="text-lg text-gray-700 mb-6">
-                You can contact us via phone at{" "}
-                <a href="tel:555-555-5555" className="text-blue-500">
-                  (555) 555-5555
-                </a>
-              </p>
             </div>
           </div>
         </div>
