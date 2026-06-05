@@ -1,0 +1,95 @@
+flowchart TB
+    subgraph Visitors["Visitors & Admins"]
+        PubUser(["Public Visitor"])
+        AdminUser(["Admin / Staff"])
+    end
+
+    subgraph App["Next.js 16 — fuzz-butts.org (Vercel)"]
+        direction TB
+
+        MW["Middleware\nSession refresh · /admin/:path* guard"]
+
+        subgraph Public["Public Pages (Server Components)"]
+            PHome["/ — Home\nFeatured adoption (cached 1h)"]
+            PAdopt["/adopt — Adoptable Cats"]
+            PStatic["/about  /donate  /contact"]
+        end
+
+        subgraph Auth["Auth Pages (Client Components)"]
+            ALogin["/admin — Login"]
+            AForgot["/login/forgot-password"]
+            AReset["/login/reset-password"]
+            ACallback["/auth/callback — Route Handler\nexchangeCodeForSession"]
+        end
+
+        subgraph Admin["Admin Dashboard — /admin/manage/* (Server Components)"]
+            ADash["/home — Overview\nPet & user stats"]
+            ACats["/cats — Pet Management\nCreate · Edit · Disposition"]
+            AUsers["/users — User Management\nRoles · Audit log"]
+            AFeatured["/featured — Featured Adoption\nSchedule by date range"]
+        end
+
+        subgraph Actions["Server Actions"]
+            SCats["cats/actions.ts\ncreatePet · updatePet · deletePet\nuploadPetImage · setPrimaryImage"]
+            SUsers["users/actions.ts\ncreateUser · updateUser · changePassword"]
+            SFeatured["featured/actions.ts\nsetFeatured · endFeatured"]
+        end
+
+        SAPI["/api/analyze-pet\nAI photo analysis · Route Handler"]
+        Cache["unstable_cache\ntag: featured-adoption · revalidate: 1h"]
+    end
+
+    subgraph SupabaseCloud["Supabase (Backend)"]
+        SAuth["Auth\nEmail/Password · JWT · Sessions"]
+        subgraph DB["PostgreSQL Database"]
+            TPets[("pets")]
+            TPetImg[("pet_images")]
+            TPetLog[("pet_audit_log")]
+            TUsers[("users")]
+            TUserLog[("user_audit_log")]
+            TFeatured[("featured_adoptions")]
+        end
+        SStorage["Storage\npet-images bucket"]
+    end
+
+    subgraph External["External Services"]
+        Anthropic["Anthropic API\nclaude-opus-4-8\nAuto-fill pet listings from photo"]
+        Resend["Resend SMTP\nPassword reset emails"]
+        Donations["PayPal · CashApp · Square\nDonation links"]
+    end
+
+    %% Visitor flows
+    PubUser -->|browse| Public
+    AdminUser -->|authenticate| Auth
+    AdminUser -->|manage| MW
+
+    %% Middleware
+    MW -->|authenticated| Admin
+    MW -->|unauthenticated| ALogin
+
+    %% Public page data
+    PHome --> Cache --> TFeatured
+    PAdopt --> TPets & TPetImg
+    PStatic --> Donations
+
+    %% Auth flows
+    ALogin -->|signInWithPassword| SAuth
+    AForgot -->|resetPasswordForEmail + redirectTo| SAuth
+    SAuth -->|sends reset email via| Resend
+    ACallback -->|exchangeCodeForSession| SAuth
+    AReset -->|updateUser password| SAuth
+
+    %% Admin → Server Actions
+    ACats --> SCats
+    AUsers --> SUsers
+    AFeatured --> SFeatured
+
+    %% Server Actions → DB & Storage
+    SCats --> TPets & TPetImg & TPetLog & SStorage
+    SUsers --> TUsers & TUserLog
+    SFeatured --> TFeatured
+    SFeatured -->|revalidateTag: featured-adoption| Cache
+
+    %% AI analysis
+    ACats -->|photo upload| SAPI
+    SAPI --> Anthropic
