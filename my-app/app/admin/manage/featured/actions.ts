@@ -1,7 +1,7 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function setFeatured(formData: FormData): Promise<{ error?: string }> {
   const adminClient = createAdminClient();
@@ -23,6 +23,7 @@ export async function setFeatured(formData: FormData): Promise<{ error?: string 
 
   if (error) return { error: error.message };
 
+  revalidateTag("featured-adoption", "max");
   revalidatePath("/admin/manage/featured");
   revalidatePath("/");
   return {};
@@ -38,6 +39,7 @@ export async function endFeatured(id: string): Promise<{ error?: string }> {
 
   if (error) return { error: error.message };
 
+  revalidateTag("featured-adoption", "max");
   revalidatePath("/admin/manage/featured");
   revalidatePath("/");
   return {};
