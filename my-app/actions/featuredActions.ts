@@ -3,7 +3,9 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export async function setFeatured(formData: FormData): Promise<{ error?: string }> {
+export async function setFeatured(
+  formData: FormData,
+): Promise<{ error?: string }> {
   const adminClient = createAdminClient();
   const petId = formData.get("pet_id") as string;
   const startDate = formData.get("start_date") as string;

@@ -1,15 +1,18 @@
 "use client";
 import { User } from "@/types/types";
 import { useState, useTransition } from "react";
-import { updateUser, changePassword } from "@/app/admin/manage/users/actions";
+import { updateUser, changePassword } from "@/actions/userActions";
 
 const AVAILABLE_ROLES = ["admin", "volunteer"] as const;
 
 export default function ManageUserCard({ user }: { user: User }) {
   const [isEditing, setIsEditing] = useState(false);
   const [auditOpen, setAuditOpen] = useState(false);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>(
-    () => user.roles.split(",").map((r) => r.trim()).filter(Boolean)
+  const [selectedRoles, setSelectedRoles] = useState<string[]>(() =>
+    user.roles
+      .split(",")
+      .map((r) => r.trim())
+      .filter(Boolean),
   );
   const [phoneValue, setPhoneValue] = useState(user.phone ?? "");
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +26,8 @@ export default function ManageUserCard({ user }: { user: User }) {
 
   function formatPhone(raw: string) {
     let digits = raw.replace(/\D/g, "");
-    if (digits.length === 11 && digits.startsWith("1")) digits = digits.slice(1);
+    if (digits.length === 11 && digits.startsWith("1"))
+      digits = digits.slice(1);
     digits = digits.slice(0, 10);
     if (digits.length < 4) return digits;
     if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
@@ -32,7 +36,7 @@ export default function ManageUserCard({ user }: { user: User }) {
 
   function toggleRole(role: string) {
     setSelectedRoles((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role],
     );
   }
 
@@ -82,7 +86,9 @@ export default function ManageUserCard({ user }: { user: User }) {
           <input type="hidden" name="roles" value={selectedRoles.join(",")} />
 
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              First Name
+            </label>
             <input
               type="text"
               name="first_name"
@@ -92,7 +98,9 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Last Name
+            </label>
             <input
               type="text"
               name="last_name"
@@ -102,7 +110,9 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title
+            </label>
             <input
               type="text"
               name="title"
@@ -111,7 +121,9 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -120,7 +132,9 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Phone
+            </label>
             <input
               type="tel"
               name="phone"
@@ -130,10 +144,14 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Roles</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Roles
+            </label>
             <div className="flex gap-4">
               {AVAILABLE_ROLES.map((role) => (
-                <label key={role} className="flex items-center gap-2 capitalize">
+                <label
+                  key={role}
+                  className="flex items-center gap-2 capitalize">
                   <input
                     type="checkbox"
                     checked={selectedRoles.includes(role)}
@@ -145,8 +163,13 @@ export default function ManageUserCard({ user }: { user: User }) {
             </div>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select name="status" defaultValue={user.status} className="border p-2 w-full">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <select
+              name="status"
+              defaultValue={user.status}
+              className="border p-2 w-full">
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
               <option value="suspended">Suspended</option>
@@ -179,13 +202,13 @@ export default function ManageUserCard({ user }: { user: User }) {
       <h2 className="text-2xl font-bold mb-1">{fullName}</h2>
       {user.title && <p className="text-gray-500 mb-1">{user.title}</p>}
       {user.email && <p className="text-gray-600 mb-1">{user.email}</p>}
-      {user.phone && <p className="text-gray-600 mb-1">{formatPhone(user.phone)}</p>}
+      {user.phone && (
+        <p className="text-gray-600 mb-1">{formatPhone(user.phone)}</p>
+      )}
       <p className="text-gray-600 mb-1">
         Status: <span className="capitalize">{user.status}</span>
       </p>
-      {user.roles && (
-        <p className="text-gray-600 mb-2">Roles: {user.roles}</p>
-      )}
+      {user.roles && <p className="text-gray-600 mb-2">Roles: {user.roles}</p>}
 
       {hasAudit && (
         <div className="mt-4">
@@ -215,7 +238,9 @@ export default function ManageUserCard({ user }: { user: User }) {
                 <span>Action</span>
               </div>
               {user.audit!.map((entry) => (
-                <div key={entry.id} className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-1 py-1 border-b last:border-0 text-gray-700">
+                <div
+                  key={entry.id}
+                  className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-1 py-1 border-b last:border-0 text-gray-700">
                   <span className="whitespace-nowrap text-gray-500">
                     {new Date(entry.event_date_time).toLocaleString()}
                   </span>
@@ -240,16 +265,26 @@ export default function ManageUserCard({ user }: { user: User }) {
         </button>
         <button
           className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
-          onClick={() => { setShowPasswordForm((s) => !s); setPasswordError(null); setPasswordSuccess(false); }}>
+          onClick={() => {
+            setShowPasswordForm((s) => !s);
+            setPasswordError(null);
+            setPasswordSuccess(false);
+          }}>
           Change Password
         </button>
       </div>
 
       {showPasswordForm && (
-        <form onSubmit={handlePasswordSubmit} className="mt-4 border border-gray-200 rounded p-4 bg-gray-50 max-w-sm">
-          <p className="text-sm font-medium text-gray-700 mb-3">Set new password for {fullName}</p>
+        <form
+          onSubmit={handlePasswordSubmit}
+          className="mt-4 border border-gray-200 rounded p-4 bg-gray-50 max-w-sm">
+          <p className="text-sm font-medium text-gray-700 mb-3">
+            Set new password for {fullName}
+          </p>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              New Password
+            </label>
             <input
               type="password"
               value={newPassword}
@@ -260,7 +295,9 @@ export default function ManageUserCard({ user }: { user: User }) {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
             <input
               type="password"
               value={confirmPassword}
@@ -270,8 +307,14 @@ export default function ManageUserCard({ user }: { user: User }) {
               className="border p-2 w-full rounded text-sm"
             />
           </div>
-          {passwordError && <p className="text-red-500 text-sm mb-3">{passwordError}</p>}
-          {passwordSuccess && <p className="text-green-600 text-sm mb-3">Password updated successfully.</p>}
+          {passwordError && (
+            <p className="text-red-500 text-sm mb-3">{passwordError}</p>
+          )}
+          {passwordSuccess && (
+            <p className="text-green-600 text-sm mb-3">
+              Password updated successfully.
+            </p>
+          )}
           <div className="flex gap-2">
             <button
               type="submit"
@@ -281,7 +324,12 @@ export default function ManageUserCard({ user }: { user: User }) {
             </button>
             <button
               type="button"
-              onClick={() => { setShowPasswordForm(false); setPasswordError(null); setNewPassword(""); setConfirmPassword(""); }}
+              onClick={() => {
+                setShowPasswordForm(false);
+                setPasswordError(null);
+                setNewPassword("");
+                setConfirmPassword("");
+              }}
               className="border border-gray-300 px-4 py-2 rounded text-sm hover:bg-gray-100">
               Cancel
             </button>

@@ -2,24 +2,67 @@
 
 import { useState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
-import { PetType, PetSex, PetStatus, IntakeReason, DispositionReason } from "@/types/types";
-import { createPet } from "@/app/admin/manage/cats/actions";
+import {
+  PetType,
+  PetSex,
+  PetStatus,
+  IntakeReason,
+  DispositionReason,
+} from "@/types/types";
+import { createPet } from "@/actions/catActions";
 import PetImageInput from "@/components/manage/PetImageInput";
 
-const PET_TYPES: PetType[] = ["cat", "dog", "rabbit", "bird", "small_animal", "reptile", "other"];
+const PET_TYPES: PetType[] = [
+  "cat",
+  "dog",
+  "rabbit",
+  "bird",
+  "small_animal",
+  "reptile",
+  "other",
+];
 const PET_SEXES: PetSex[] = ["male", "female", "unknown"];
-const PET_STATUSES: PetStatus[] = ["quarantined", "available for adoption", "pending adoption", "adopted", "deceased", "reclaimed by owner"];
-const INTAKE_REASONS: IntakeReason[] = ["stray", "owner_surrender", "transfer", "born_in_care", "other"];
-const DISPOSITION_REASONS: DispositionReason[] = ["adopted", "transferred", "returned_to_owner", "deceased", "euthanized", "other"];
+const PET_STATUSES: PetStatus[] = [
+  "quarantined",
+  "available for adoption",
+  "pending adoption",
+  "adopted",
+  "deceased",
+  "reclaimed by owner",
+];
+const INTAKE_REASONS: IntakeReason[] = [
+  "stray",
+  "owner_surrender",
+  "transfer",
+  "born_in_care",
+  "other",
+];
+const DISPOSITION_REASONS: DispositionReason[] = [
+  "adopted",
+  "transferred",
+  "returned_to_owner",
+  "deceased",
+  "euthanized",
+  "other",
+];
 
 function titleCase(s: string) {
-  return s.split(/[\s_]/).map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+  return s
+    .split(/[\s_]/)
+    .map((w) => w[0].toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 const inputCls = "border rounded p-2 w-full text-sm";
 const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
-const defaultFields = { name: "", breed: "", age: "", weight: "", description: "" };
+const defaultFields = {
+  name: "",
+  breed: "",
+  age: "",
+  weight: "",
+  description: "",
+};
 
 export default function AddCatCard() {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,7 +132,10 @@ export default function AddCatCard() {
     doAutofill(selected);
   }
 
-  async function handleSubmit(e: { currentTarget: HTMLFormElement; preventDefault(): void }) {
+  async function handleSubmit(e: {
+    currentTarget: HTMLFormElement;
+    preventDefault(): void;
+  }) {
     e.preventDefault();
     setIsPending(true);
     setError(null);
@@ -129,18 +175,26 @@ export default function AddCatCard() {
       {showSexPicker && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-lg shadow-xl p-6 w-72">
-            <p className="text-sm font-medium text-gray-800 mb-4 text-center">Is this pet male or female?</p>
+            <p className="text-sm font-medium text-gray-800 mb-4 text-center">
+              Is this pet male or female?
+            </p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => handleSexSelect("male")}
+              <button
+                type="button"
+                onClick={() => handleSexSelect("male")}
                 className="flex-1 bg-blue-500 text-white py-2 rounded text-sm hover:bg-blue-600">
                 Male
               </button>
-              <button type="button" onClick={() => handleSexSelect("female")}
+              <button
+                type="button"
+                onClick={() => handleSexSelect("female")}
                 className="flex-1 bg-pink-500 text-white py-2 rounded text-sm hover:bg-pink-600">
                 Female
               </button>
             </div>
-            <button type="button" onClick={() => setShowSexPicker(false)}
+            <button
+              type="button"
+              onClick={() => setShowSexPicker(false)}
               className="mt-3 w-full text-xs text-gray-400 hover:text-gray-600">
               Cancel
             </button>
@@ -161,9 +215,11 @@ export default function AddCatCard() {
               onClick={handleAutofillClick}
               disabled={isAnalyzing}
               className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700 disabled:opacity-50 transition-colors">
-              {isAnalyzing
-                ? <Loader2 size={15} className="animate-spin" />
-                : <Sparkles size={15} />}
+              {isAnalyzing ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                <Sparkles size={15} />
+              )}
               {isAnalyzing ? "Analyzing photo…" : "Auto-fill with AI"}
             </button>
           </div>
@@ -182,20 +238,39 @@ export default function AddCatCard() {
           </div>
           <div>
             <label className={labelCls}>Status *</label>
-            <select name="status" defaultValue="available for adoption" className={inputCls}>
-              {PET_STATUSES.map((s) => <option key={s} value={s}>{titleCase(s)}</option>)}
+            <select
+              name="status"
+              defaultValue="available for adoption"
+              className={inputCls}>
+              {PET_STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {titleCase(s)}
+                </option>
+              ))}
             </select>
           </div>
           <div>
             <label className={labelCls}>Type *</label>
             <select name="pet_type" defaultValue="cat" className={inputCls}>
-              {PET_TYPES.map((t) => <option key={t} value={t}>{titleCase(t)}</option>)}
+              {PET_TYPES.map((t) => (
+                <option key={t} value={t}>
+                  {titleCase(t)}
+                </option>
+              ))}
             </select>
           </div>
           <div>
             <label className={labelCls}>Sex *</label>
-            <select name="sex" className={inputCls} value={sex} onChange={(e) => setSex(e.target.value as PetSex)}>
-              {PET_SEXES.map((s) => <option key={s} value={s}>{titleCase(s)}</option>)}
+            <select
+              name="sex"
+              className={inputCls}
+              value={sex}
+              onChange={(e) => setSex(e.target.value as PetSex)}>
+              {PET_SEXES.map((s) => (
+                <option key={s} value={s}>
+                  {titleCase(s)}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -230,12 +305,24 @@ export default function AddCatCard() {
           </div>
           <div>
             <label className={labelCls}>Intake Date *</label>
-            <input name="intake_date" type="date" required className={inputCls} />
+            <input
+              name="intake_date"
+              type="date"
+              required
+              className={inputCls}
+            />
           </div>
           <div>
             <label className={labelCls}>Intake Reason *</label>
-            <select name="intake_reason" defaultValue="stray" className={inputCls}>
-              {INTAKE_REASONS.map((r) => <option key={r} value={r}>{titleCase(r)}</option>)}
+            <select
+              name="intake_reason"
+              defaultValue="stray"
+              className={inputCls}>
+              {INTAKE_REASONS.map((r) => (
+                <option key={r} value={r}>
+                  {titleCase(r)}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col gap-2">
@@ -252,7 +339,11 @@ export default function AddCatCard() {
             {spayedNeutered && (
               <div>
                 <label className={labelCls}>Spay/Neuter Date</label>
-                <input name="spay_neuter_date" type="date" className={inputCls} />
+                <input
+                  name="spay_neuter_date"
+                  type="date"
+                  className={inputCls}
+                />
               </div>
             )}
           </div>
@@ -284,7 +375,11 @@ export default function AddCatCard() {
               <label className={labelCls}>Disposition Reason *</label>
               <select name="disposition_reason" className={inputCls}>
                 <option value="">Select reason</option>
-                {DISPOSITION_REASONS.map((r) => <option key={r} value={r}>{titleCase(r)}</option>)}
+                {DISPOSITION_REASONS.map((r) => (
+                  <option key={r} value={r}>
+                    {titleCase(r)}
+                  </option>
+                ))}
               </select>
             </div>
           )}

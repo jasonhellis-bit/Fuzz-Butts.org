@@ -14,22 +14,38 @@ interface PetImageInputProps {
 async function cropToFile(imageSrc: string, cropPx: Area): Promise<File> {
   const img = new Image();
   img.src = imageSrc;
-  await new Promise((res) => { img.onload = res; });
+  await new Promise((res) => {
+    img.onload = res;
+  });
   const canvas = document.createElement("canvas");
   canvas.width = 800;
   canvas.height = 800;
   const ctx = canvas.getContext("2d")!;
-  ctx.drawImage(img, cropPx.x, cropPx.y, cropPx.width, cropPx.height, 0, 0, 800, 800);
+  ctx.drawImage(
+    img,
+    cropPx.x,
+    cropPx.y,
+    cropPx.width,
+    cropPx.height,
+    0,
+    0,
+    800,
+    800,
+  );
   return new Promise((res) =>
     canvas.toBlob(
       (blob) => res(new File([blob!], "photo.jpg", { type: "image/jpeg" })),
       "image/jpeg",
-      0.9
-    )
+      0.9,
+    ),
   );
 }
 
-export default function PetImageInput({ currentImageUrl, onChange, onDelete }: PetImageInputProps) {
+export default function PetImageInput({
+  currentImageUrl,
+  onChange,
+  onDelete,
+}: PetImageInputProps) {
   const [rawSrc, setRawSrc] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -49,7 +65,10 @@ export default function PetImageInput({ currentImageUrl, onChange, onDelete }: P
     e.target.value = "";
   }
 
-  const onCropComplete = useCallback((_: Area, pixels: Area) => setCropPx(pixels), []);
+  const onCropComplete = useCallback(
+    (_: Area, pixels: Area) => setCropPx(pixels),
+    [],
+  );
 
   async function handleConfirm() {
     if (!rawSrc || !cropPx) return;
@@ -113,14 +132,23 @@ export default function PetImageInput({ currentImageUrl, onChange, onDelete }: P
     <div>
       {displayImage && (
         <div className="relative mb-2">
-          <img src={displayImage} alt="Preview" className="w-full h-64 object-cover rounded" />
+          <img
+            src={displayImage}
+            alt="Preview"
+            className="w-full h-64 object-cover rounded"
+          />
           {confirmingDelete ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/60 rounded">
-              <p className="text-white text-sm font-medium">Remove this photo?</p>
+              <p className="text-white text-sm font-medium">
+                Remove this photo?
+              </p>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => { setConfirmingDelete(false); onDelete?.(); }}
+                  onClick={() => {
+                    setConfirmingDelete(false);
+                    onDelete?.();
+                  }}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded text-sm font-medium">
                   Remove
                 </button>
@@ -166,8 +194,21 @@ export default function PetImageInput({ currentImageUrl, onChange, onDelete }: P
           Library
         </button>
       </div>
-      <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFile} />
-      <input ref={libraryRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+      <input
+        ref={cameraRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={handleFile}
+      />
+      <input
+        ref={libraryRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFile}
+      />
     </div>
   );
 }

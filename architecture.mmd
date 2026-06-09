@@ -30,9 +30,9 @@ flowchart TB
         end
 
         subgraph Actions["Server Actions"]
-            SCats["cats/actions.ts\ncreatePet · updatePet · deletePet\nuploadPetImage · setPrimaryImage"]
-            SUsers["users/actions.ts\ncreateUser · updateUser · changePassword"]
-            SFeatured["featured/actions.ts\nsetFeatured · endFeatured"]
+            SCats["actions/catActions.ts\ncreatePet · updatePet · removePet · deletePhoto\nuploadPetImage · setPrimaryImage · deleteImageById\ngetPetImages · getPetAuditLog"]
+            SUsers["actions/userActions.ts\ncreateUser · updateUser · changePassword"]
+            SFeatured["actions/featuredActions.ts\nsetFeatured · endFeatured"]
         end
 
         SAPI["/api/analyze-pet\nAI photo analysis · Route Handler"]

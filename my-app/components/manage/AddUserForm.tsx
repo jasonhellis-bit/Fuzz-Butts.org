@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
-import { createUser } from "@/app/admin/manage/users/actions";
+import { createUser } from "@/actions/userActions";
 
 const AVAILABLE_ROLES = ["admin", "volunteer"] as const;
 
@@ -12,7 +12,7 @@ export default function AddUserForm() {
 
   function toggleRole(role: string) {
     setSelectedRoles((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role],
     );
   }
 
@@ -49,27 +49,60 @@ export default function AddUserForm() {
         <input type="hidden" name="roles" value={selectedRoles.join(",")} />
 
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-          <input type="text" name="first_name" required className="border p-2 w-full" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            First Name
+          </label>
+          <input
+            type="text"
+            name="first_name"
+            required
+            className="border p-2 w-full"
+          />
         </div>
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-          <input type="text" name="last_name" required className="border p-2 w-full" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="last_name"
+            required
+            className="border p-2 w-full"
+          />
         </div>
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Title
+          </label>
           <input type="text" name="title" className="border p-2 w-full" />
         </div>
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input type="email" name="email" required className="border p-2 w-full" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            required
+            className="border p-2 w-full"
+          />
         </div>
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Temporary Password</label>
-          <input type="password" name="password" required minLength={8} className="border p-2 w-full" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Temporary Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            required
+            minLength={8}
+            className="border p-2 w-full"
+          />
         </div>
         <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Roles</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Roles
+          </label>
           <div className="flex gap-4">
             {AVAILABLE_ROLES.map((role) => (
               <label key={role} className="flex items-center gap-2 capitalize">
@@ -84,8 +117,13 @@ export default function AddUserForm() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select name="status" defaultValue="pending" className="border p-2 w-full">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Status
+          </label>
+          <select
+            name="status"
+            defaultValue="pending"
+            className="border p-2 w-full">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
             <option value="suspended">Suspended</option>
