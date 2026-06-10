@@ -63,7 +63,7 @@ export default function Navigation() {
       className="sticky top-0 z-50 shadow-lg">
       <div className="relative max-w-7xl mx-auto px-4 h-16">
         {/* Logo */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center z-10">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center z-10 pl-4 md:pl-0">
           <span
             className="text-2xl sm:text-4xl select-none"
             style={{
