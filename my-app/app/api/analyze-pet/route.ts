@@ -2,9 +2,12 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic();
 
-function buildPrompt(sex: "male" | "female") {
+function buildPrompt(sex: "male" | "female", notes: string) {
   const pronoun = sex === "male" ? "he/him/his" : "she/her/her";
-  return `You are helping staff at an animal shelter catalog a new animal. Look at this photo and provide your best estimates for the following fields. The animal is ${sex} — use ${pronoun} pronouns in the description. Return ONLY a JSON object with these exact keys:
+  const notesSection = notes.trim()
+    ? `\n\nImportant notes about this animal: ${notes.trim()}. Weave any relevant restrictions or considerations naturally into the description.`
+    : "";
+  return `You are helping staff at an animal shelter catalog a new animal. Look at this photo and provide your best estimates for the following fields. The animal is ${sex} — use ${pronoun} pronouns in the description.${notesSection} Return ONLY a JSON object with these exact keys:
 
 {
   "name": "A sweet, fitting name for this animal (be creative but appropriate for a shelter)",
@@ -21,6 +24,7 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const image = formData.get("image") as File | null;
   const sex = (formData.get("sex") as string) === "female" ? "female" : "male";
+  const notes = (formData.get("notes") as string) || "";
 
   if (!image) {
     return Response.json({ error: "No image provided" }, { status: 400 });
@@ -40,7 +44,7 @@ export async function POST(request: Request) {
     system: [
       {
         type: "text",
-        text: buildPrompt(sex),
+        text: buildPrompt(sex, notes),
         cache_control: { type: "ephemeral" },
       },
     ],

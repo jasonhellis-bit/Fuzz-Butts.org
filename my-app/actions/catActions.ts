@@ -28,6 +28,7 @@ const FIELD_LABELS: Record<string, string> = {
   disposition_date: "Disposition date",
   disposition_reason: "Disposition reason",
   description: "Description",
+  notes: "Notes",
 };
 
 function buildUpdateDescription(
@@ -65,6 +66,7 @@ export async function createPet(
   const age = (formData.get("age") as string) || null;
   const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
+  const notes = (formData.get("notes") as string) || null;
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
   const intake_reason = formData.get("intake_reason") as string;
@@ -88,6 +90,7 @@ export async function createPet(
       age,
       weight,
       description,
+      notes,
       status,
       intake_date,
       intake_reason,
@@ -143,6 +146,7 @@ export async function updatePet(
   const age = (formData.get("age") as string) || null;
   const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
+  const notes = (formData.get("notes") as string) || null;
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
   const intake_reason = formData.get("intake_reason") as string;
@@ -159,7 +163,7 @@ export async function updatePet(
   const { data: existing, error: fetchError } = await adminClient
     .from("pets")
     .select(
-      "name, pet_type, sex, breed, age, weight, description, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason",
+      "name, pet_type, sex, breed, age, weight, description, notes, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason",
     )
     .eq("id", id)
     .single();
@@ -176,6 +180,7 @@ export async function updatePet(
       age,
       weight,
       description,
+      notes,
       status,
       intake_date,
       intake_reason,
@@ -232,6 +237,7 @@ export async function updatePet(
       age,
       weight,
       description,
+      notes,
       status,
       intake_date,
       intake_reason,

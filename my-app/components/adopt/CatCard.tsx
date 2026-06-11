@@ -28,6 +28,7 @@ export default function CatCard({ pet }: { pet: Pet }) {
 
   return (
     <div
+      id={pet.id}
       className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
       onClick={() => setExpanded((e) => !e)}>
       <div className="relative w-full h-72 bg-gray-100">
