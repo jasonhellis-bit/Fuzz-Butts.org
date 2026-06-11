@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/navigation/Navigation";
 import FuzzButtsBanner from "@/components/navigation/FuzzButtsBanner";
 import Footer from "@/components/navigation/Footer";
+import ChatWidget from "@/components/chat/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <FuzzButtsBanner />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ChatWidget />
       </body>
     </html>
   );
