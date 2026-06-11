@@ -108,9 +108,11 @@ export default function About() {
 
               <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
                 <div className="w-full sm:w-1/6">
-                  <div className="h-auto w-full rounded-3xl bg-gray-200 shadow-xl aspect-[3/4] flex items-center justify-center text-gray-400 text-sm">
-                    Photo coming soon
-                  </div>
+                  <img
+                    src="/fuzz_butts_cto.jpg"
+                    alt="Fuzz Butts Chief Technology Officer"
+                    className="h-auto w-full rounded-3xl object-cover shadow-xl"
+                  />
                 </div>
                 <div className="w-full sm:w-5/6">
                   <h1 className="text-4xl font-bold mb-4">
