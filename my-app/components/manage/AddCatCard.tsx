@@ -62,6 +62,7 @@ const defaultFields = {
   age: "",
   weight: "",
   description: "",
+  notes: "",
 };
 
 export default function AddCatCard() {
@@ -71,7 +72,8 @@ export default function AddCatCard() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [showSexPicker, setShowSexPicker] = useState(false);
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiNotes, setAiNotes] = useState("");
   const [sex, setSex] = useState<PetSex>("unknown");
   const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState(defaultFields);
@@ -90,7 +92,7 @@ export default function AddCatCard() {
     setSex("unknown");
   }
 
-  async function doAutofill(confirmedSex: "male" | "female") {
+  async function doAutofill(confirmedSex: "male" | "female", notes: string) {
     if (!imageFile) return;
     setIsAnalyzing(true);
     setError(null);
@@ -98,18 +100,20 @@ export default function AddCatCard() {
       const fd = new FormData();
       fd.set("image", imageFile);
       fd.set("sex", confirmedSex);
+      fd.set("notes", notes);
       const res = await fetch("/api/analyze-pet", { method: "POST", body: fd });
       const data = await res.json();
       if (data.error) {
         setError(`AI autofill failed: ${data.error}`);
       } else {
-        setFields({
+        setFields((f) => ({
+          ...f,
           name: data.name ?? "",
           breed: data.breed ?? "",
           age: data.age ?? "",
           weight: data.weight ?? "",
           description: data.description ?? "",
-        });
+        }));
       }
     } catch {
       setError("AI autofill failed. Please try again.");
@@ -119,17 +123,8 @@ export default function AddCatCard() {
   }
 
   function handleAutofillClick() {
-    if (sex === "male" || sex === "female") {
-      doAutofill(sex);
-    } else {
-      setShowSexPicker(true);
-    }
-  }
-
-  function handleSexSelect(selected: "male" | "female") {
-    setSex(selected);
-    setShowSexPicker(false);
-    doAutofill(selected);
+    setAiNotes(fields.notes);
+    setShowAiModal(true);
   }
 
   async function handleSubmit(e: {
@@ -172,32 +167,53 @@ export default function AddCatCard() {
     <div className="col-span-full bg-white rounded-lg shadow-md p-4">
       <h2 className="text-xl font-bold mb-4">Add New Pet</h2>
 
-      {showSexPicker && (
+      {showAiModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-72">
-            <p className="text-sm font-medium text-gray-800 mb-4 text-center">
-              Is this pet male or female?
-            </p>
-            <div className="flex gap-3">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-80">
+            <p className="text-sm font-semibold text-gray-800 mb-4 text-center">Auto-fill with AI</p>
+            <p className="text-xs text-gray-500 mb-2">Sex</p>
+            <div className="flex gap-3 mb-4">
               <button
                 type="button"
-                onClick={() => handleSexSelect("male")}
-                className="flex-1 bg-blue-500 text-white py-2 rounded text-sm hover:bg-blue-600">
+                onClick={() => setSex("male")}
+                className={`flex-1 py-2 rounded text-sm transition-colors ${sex === "male" ? "bg-blue-500 text-white" : "border border-gray-300 text-gray-700 hover:bg-gray-50"}`}>
                 Male
               </button>
               <button
                 type="button"
-                onClick={() => handleSexSelect("female")}
-                className="flex-1 bg-pink-500 text-white py-2 rounded text-sm hover:bg-pink-600">
+                onClick={() => setSex("female")}
+                className={`flex-1 py-2 rounded text-sm transition-colors ${sex === "female" ? "bg-pink-500 text-white" : "border border-gray-300 text-gray-700 hover:bg-gray-50"}`}>
                 Female
               </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowSexPicker(false)}
-              className="mt-3 w-full text-xs text-gray-400 hover:text-gray-600">
-              Cancel
-            </button>
+            <p className="text-xs text-gray-500 mb-1">Notes <span className="text-gray-400">(optional)</span></p>
+            <textarea
+              rows={3}
+              className="border rounded p-2 w-full text-sm mb-4"
+              placeholder="e.g. Not good with dogs, must be only cat"
+              value={aiNotes}
+              onChange={(e) => setAiNotes(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <button
+                type="button"
+                disabled={sex === "unknown"}
+                onClick={() => {
+                  if (sex === "male" || sex === "female") {
+                    setShowAiModal(false);
+                    doAutofill(sex, aiNotes);
+                  }
+                }}
+                className="flex-1 bg-purple-600 text-white py-2 rounded text-sm hover:bg-purple-700 disabled:opacity-50 transition-colors">
+                Analyze
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAiModal(false)}
+                className="flex-1 border border-gray-300 py-2 rounded text-sm hover:bg-gray-50">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -357,6 +373,18 @@ export default function AddCatCard() {
             className={inputCls}
             value={fields.description}
             onChange={(e) => setField("description", e.target.value)}
+          />
+        </div>
+
+        <div className="mt-4">
+          <label className={labelCls}>Notes</label>
+          <textarea
+            name="notes"
+            rows={2}
+            className={inputCls}
+            placeholder="e.g. Not good with dogs, must be only cat"
+            value={fields.notes}
+            onChange={(e) => setField("notes", e.target.value)}
           />
         </div>
 

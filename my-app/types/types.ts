@@ -21,6 +21,7 @@ export interface Pet {
   age: string | null;
   weight: string | null;
   description: string | null;
+  notes: string | null;
   intake_date: string;
   intake_reason: IntakeReason;
   spayed_neutered: boolean;
