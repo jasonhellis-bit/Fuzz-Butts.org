@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
 import CatCard from "@/components/adopt/CatCard";
 import { Pet } from "@/types/types";
@@ -34,11 +35,13 @@ export default async function AdoptPage() {
     <div className="min-h-screen flex flex-col items-center gap-8 py-16">
       <h1 className="text-4xl font-bold">Adopt a Cat</h1>
       <p className="text-gray-600 text-center max-w-xl">
-        If you&apos;re interested in adopting, contact us at{" "}
-        <a href="mailto:fuzzbuttinc@gmail.com" className="text-blue-500 hover:underline">
-          fuzzbuttinc@gmail.com
-        </a>
+        Found a cat you love? Fill out an adoption application and we&apos;ll be in touch!
       </p>
+      <Link
+        href="/adopt/apply"
+        className="bg-blue-600 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+        Start an Application
+      </Link>
       <div className="w-full max-w-7xl px-4">
         {petsWithImages.length === 0 ? (
           <div className="flex items-center justify-center">

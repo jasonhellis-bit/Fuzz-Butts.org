@@ -50,6 +50,24 @@ export interface AuditLogEntry {
   user_name: string | null;
 }
 
+export type ApplicationStatus = 'pending' | 'under_review' | 'approved' | 'denied' | 'withdrawn';
+
+export interface AdoptionApplication {
+  id: string;
+  submitted_at: string;
+  status: ApplicationStatus;
+  application_data: Record<string, unknown>;
+}
+
+export interface ApplicationNote {
+  id: string;
+  application_id: string;
+  note: string;
+  created_at: string;
+  created_by_user_id: string | null;
+  created_by_name: string | null;
+}
+
 export type UserStatus = 'active' | 'inactive' | 'suspended' | 'pending';
 
 export interface User {

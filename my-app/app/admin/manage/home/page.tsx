@@ -49,9 +49,16 @@ const DISPOSITION_REASON_STYLES: Record<DispositionReason, { border: string; cou
 export default async function AdminHome() {
   const adminClient = createAdminClient();
 
-  const [{ count: userCount }, { data: pets }] = await Promise.all([
+  const [
+    { count: userCount },
+    { data: pets },
+    { count: pendingAppCount },
+    { count: underReviewAppCount },
+  ] = await Promise.all([
     adminClient.from("users").select("*", { count: "exact", head: true }),
     adminClient.from("pets").select("status, disposition_date, disposition_reason"),
+    adminClient.from("adoption_applications").select("*", { count: "exact", head: true }).eq("status", "pending"),
+    adminClient.from("adoption_applications").select("*", { count: "exact", head: true }).eq("status", "under_review"),
   ]);
 
   const allPets = pets ?? [];
@@ -84,10 +91,24 @@ export default async function AdminHome() {
         and stay updated on the latest shelter news and events.
       </p>
 
-      <div className="w-full max-w-7xl mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-7xl mb-6">
         <div className="bg-white shadow-md rounded p-4">
-          <h2 className="text-2xl font-bold mb-1">Total Users</h2>
-          <p className="text-3xl font-semibold text-gray-700">{userCount ?? 0}</p>
+          <h2 className="text-lg font-semibold text-gray-700 mb-1">Total Users</h2>
+          <p className="text-3xl font-bold text-gray-800">{userCount ?? 0}</p>
+        </div>
+        <div className="bg-white shadow-md rounded p-4 border-l-4 border-yellow-400">
+          <h2 className="text-lg font-semibold text-gray-700 mb-1">
+            <a href="/admin/manage/applications" className="hover:underline">New Applications</a>
+          </h2>
+          <p className="text-3xl font-bold text-yellow-600">{pendingAppCount ?? 0}</p>
+          <p className="text-xs text-gray-400 mt-1">Pending review</p>
+        </div>
+        <div className="bg-white shadow-md rounded p-4 border-l-4 border-blue-400">
+          <h2 className="text-lg font-semibold text-gray-700 mb-1">
+            <a href="/admin/manage/applications" className="hover:underline">Under Review</a>
+          </h2>
+          <p className="text-3xl font-bold text-blue-600">{underReviewAppCount ?? 0}</p>
+          <p className="text-xs text-gray-400 mt-1">Applications in progress</p>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, Cat, Star, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, Cat, Star, ClipboardList, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/lib/context/UserContext";
@@ -50,6 +50,12 @@ export default function ManageNav() {
           <a href="/admin/manage/featured" className="text-black hover:text-gray-600 flex items-center gap-2">
             <Star size={18} />
             <span className="hidden md:inline">Featured</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/manage/applications" className="text-black hover:text-gray-600 flex items-center gap-2">
+            <ClipboardList size={18} />
+            <span className="hidden md:inline">Applications</span>
           </a>
         </li>
         <li>
