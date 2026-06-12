@@ -14,27 +14,64 @@ const STATUS_BADGE: Record<ApplicationStatus, { label: string; classes: string }
   withdrawn:    { label: "Withdrawn",    classes: "bg-gray-100 text-gray-600" },
 };
 
-export default async function ApplicationsPage() {
+const ACTIVE_STATUSES: ApplicationStatus[]  = ["pending", "under_review"];
+const CLOSED_STATUSES: ApplicationStatus[]  = ["approved", "denied", "withdrawn"];
+
+export default async function ApplicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string }>;
+}) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin");
 
-  const applications = await getApplications(["pending", "under_review"]);
+  const { view } = await searchParams;
+  const showClosed = view === "closed";
+  const statuses = showClosed ? CLOSED_STATUSES : ACTIVE_STATUSES;
+
+  const applications = await getApplications(statuses);
 
   return (
     <div className="flex flex-col items-center px-4">
       <h1 className="text-4xl font-bold mb-3">Adoption Applications</h1>
-      <p className="text-gray-500 mb-8 text-center max-w-xl">
-        Active applications awaiting review. Click any row to open the full application.
+      <p className="text-gray-500 mb-6 text-center max-w-xl">
+        {showClosed
+          ? "Closed applications (approved, denied, or withdrawn)."
+          : "Active applications awaiting review. Click any row to open the full application."}
       </p>
+
+      {/* Toggle */}
+      <div className="flex rounded-lg border border-gray-200 bg-gray-100 p-1 mb-8">
+        <Link
+          href="/admin/manage/applications"
+          className={`px-5 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            !showClosed
+              ? "bg-white shadow-sm text-gray-900"
+              : "text-gray-500 hover:text-gray-700"
+          }`}>
+          Active
+        </Link>
+        <Link
+          href="/admin/manage/applications?view=closed"
+          className={`px-5 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            showClosed
+              ? "bg-white shadow-sm text-gray-900"
+              : "text-gray-500 hover:text-gray-700"
+          }`}>
+          Closed
+        </Link>
+      </div>
 
       <div className="w-full max-w-5xl">
         {applications.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
             <div className="text-4xl mb-3">📋</div>
-            <p className="text-gray-400">No active applications at this time.</p>
+            <p className="text-gray-400">
+              {showClosed ? "No closed applications." : "No active applications at this time."}
+            </p>
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">

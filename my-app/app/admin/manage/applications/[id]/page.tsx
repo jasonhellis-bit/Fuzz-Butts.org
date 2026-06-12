@@ -78,6 +78,7 @@ export default async function ApplicationDetailPage({
 
   if (!application) notFound();
 
+  const isReadOnly = !["pending", "under_review"].includes(application.status);
   const d = application.application_data as Record<string, string>;
   const name = `${d.firstName ?? ""} ${d.lastName ?? ""}`.trim() || "Unknown Applicant";
 
@@ -115,6 +116,7 @@ export default async function ApplicationDetailPage({
               applicationId={application.id}
               currentStatus={application.status as ApplicationStatus}
               notes={notes}
+              isReadOnly={isReadOnly}
             />
           </div>
         </div>
