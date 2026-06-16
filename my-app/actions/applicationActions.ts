@@ -52,6 +52,22 @@ async function getCurrentUser() {
   return user;
 }
 
+async function getDisplayName(
+  adminClient: ReturnType<typeof createAdminClient>,
+  user: Awaited<ReturnType<typeof getCurrentUser>>,
+): Promise<string | null> {
+  if (!user) return null;
+  const { data: userData } = await adminClient
+    .from("users")
+    .select("first_name, last_name")
+    .eq("id", user.id)
+    .single();
+  const firstName = (userData?.first_name || user.user_metadata?.first_name || "").trim();
+  const lastName = (userData?.last_name || user.user_metadata?.last_name || "").trim();
+  const fullName = `${firstName} ${lastName}`.trim();
+  return fullName || user.email || null;
+}
+
 export async function submitApplication(
   applicationData: Record<string, unknown>,
 ): Promise<{ id?: string; error?: string }> {
@@ -81,18 +97,7 @@ export async function addApplicationNote(
 ): Promise<{ error?: string }> {
   const adminClient = createAdminClient();
   const user = await getCurrentUser();
-
-  let createdByName: string | null = null;
-  if (user) {
-    const { data: userData } = await adminClient
-      .from("users")
-      .select("first_name, last_name")
-      .eq("id", user.id)
-      .single();
-    if (userData) {
-      createdByName = `${userData.first_name} ${userData.last_name}`.trim();
-    }
-  }
+  const createdByName = await getDisplayName(adminClient, user);
 
   const { error } = await adminClient.from("adoption_application_notes").insert({
     application_id: applicationId,
@@ -131,16 +136,44 @@ export async function getApplication(
   return data as AdoptionApplication;
 }
 
+const STATUS_LABELS: Record<ApplicationStatus, string> = {
+  pending:      "Pending",
+  under_review: "Under Review",
+  approved:     "Approved",
+  denied:       "Denied",
+  withdrawn:    "Withdrawn",
+};
+
 export async function updateApplicationStatus(
   id: string,
   status: ApplicationStatus,
 ): Promise<{ error?: string }> {
   const adminClient = createAdminClient();
+  const user = await getCurrentUser();
+  const createdByName = await getDisplayName(adminClient, user);
+
+  const { data: current, error: fetchError } = await adminClient
+    .from("adoption_applications")
+    .select("status")
+    .eq("id", id)
+    .single();
+  if (fetchError) return { error: fetchError.message };
+
   const { error } = await adminClient
     .from("adoption_applications")
     .update({ status })
     .eq("id", id);
   if (error) return { error: error.message };
+
+  const fromLabel = STATUS_LABELS[current.status as ApplicationStatus] ?? current.status;
+  const toLabel = STATUS_LABELS[status] ?? status;
+  await adminClient.from("adoption_application_notes").insert({
+    application_id: id,
+    note: `Status changed from "${fromLabel}" to "${toLabel}"`,
+    created_by_user_id: user?.id ?? null,
+    created_by_name: createdByName,
+  });
+
   revalidatePath("/admin/manage/applications");
   revalidatePath(`/admin/manage/applications/${id}`);
   return {};

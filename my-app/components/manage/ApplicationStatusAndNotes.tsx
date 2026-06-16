@@ -120,10 +120,12 @@ export default function ApplicationStatusAndNotes({
                 </p>
                 <p className="text-xs text-gray-400 mt-1">
                   {note.created_by_name ?? "Unknown"} &middot;{" "}
-                  {new Date(note.created_at).toLocaleDateString("en-US", {
+                  {new Date(note.created_at).toLocaleString("en-US", {
                     month: "short",
                     day: "numeric",
                     year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
                   })}
                 </p>
               </div>
