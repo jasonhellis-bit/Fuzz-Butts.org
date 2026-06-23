@@ -1,4 +1,10 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description:
+    "Get in touch with Fuzz Butts Cat Rescue with questions about adoption, fostering, or donations.",
+};
 
 export default function Contact() {
   return (

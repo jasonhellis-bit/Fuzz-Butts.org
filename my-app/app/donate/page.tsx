@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Donate",
+  description:
+    "Support Fuzz Butts Cat Rescue with a donation to help provide food, shelter, and medical care for cats in need.",
+};
+
 export default function DonatePage() {
   return (
     <div className="min-h-screen flex flex-col items-center mt-10 px-4">

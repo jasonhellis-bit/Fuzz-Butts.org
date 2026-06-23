@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Pet } from "@/types/types";
 
 export default function CatCard({ pet }: { pet: Pet }) {
@@ -70,6 +71,12 @@ export default function CatCard({ pet }: { pet: Pet }) {
         {pet.description && (
           <p className="text-xs text-blue-500 mt-1">{expanded ? "Show less" : "Show more"}</p>
         )}
+        <Link
+          href={`/adopt/${pet.id}`}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-block text-xs font-medium text-blue-600 hover:underline mt-2">
+          View full profile →
+        </Link>
       </div>
     </div>
   );

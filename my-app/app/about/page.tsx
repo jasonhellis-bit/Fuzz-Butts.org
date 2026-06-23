@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Meet the people behind Fuzz Butts, a 501(c)(3) nonprofit cat rescue dedicated to rescuing cats and finding them safe, loving homes.",
+};
+
 export default function About() {
   return (
     <div className="min-h-screen w-full bg-zinc-50 font-sans dark:bg-black">

@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
 import CatCard from "@/components/adopt/CatCard";
 import { Pet } from "@/types/types";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Adopt a Cat",
+  description:
+    "Browse cats currently available for adoption at Fuzz Butts Cat Rescue and start your adoption application today.",
+};
 
 export default async function AdoptPage() {
   const adminClient = createAdminClient();
