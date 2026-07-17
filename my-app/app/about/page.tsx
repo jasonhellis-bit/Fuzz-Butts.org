@@ -49,7 +49,7 @@ export default function About() {
               <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
                 <div className="w-full sm:w-1/6">
                   <img
-                    src="/fuzz_butts_founder.jpg"
+                    src="/amelia_profile.png"
                     alt="Fuzz Butts founder"
                     className="h-auto w-full rounded-3xl object-cover shadow-xl"
                   />
