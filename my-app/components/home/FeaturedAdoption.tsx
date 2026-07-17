@@ -1,7 +1,11 @@
+import { Heart, Venus, Mars, Cat, CalendarDays } from "lucide-react";
+
 export interface FeaturedPet {
+  id: string;
   name: string;
   breed: string | null;
   sex: string;
+  age: string | null;
   description: string | null;
   primary_image_url: string | null;
 }
@@ -13,53 +17,69 @@ function titleCase(s: string) {
 export default function FeaturedAdoption({ pet }: { pet: FeaturedPet | null }) {
   if (!pet) {
     return (
-      <section className="w-full max-w-5xl h-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/40 backdrop-blur-sm flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">Featured Adoption</p>
-          <div className="mt-6 text-6xl">🐾</div>
-          <p className="mt-4 text-lg text-slate-500">Check back soon for our next featured adoption.</p>
-        </div>
-      </section>
+      <div className="w-full rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">
+          Featured Cat
+        </p>
+        <div className="mt-6 text-6xl">🐾</div>
+        <p className="mt-4 text-slate-500">Check back soon for our next featured adoption.</p>
+      </div>
     );
   }
 
+  const isFemale = pet.sex.toLowerCase() === "female";
+  const SexIcon = isFemale ? Venus : Mars;
+
   return (
-    <section className="w-full max-w-5xl h-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/40 backdrop-blur-sm">
-      <div className="text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-          Featured Adoption
-        </p>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-          Meet {pet.name}
-        </h1>
-        {pet.primary_image_url ? (
-          <img
-            src={pet.primary_image_url}
-            alt={pet.name}
-            className="mx-auto mt-6 w-48 h-48 sm:w-72 sm:h-72 rounded-full object-cover"
-            loading="eager"
-          />
-        ) : (
-          <div className="mx-auto mt-6 w-48 h-48 sm:w-72 sm:h-72 rounded-full bg-slate-100 flex items-center justify-center text-6xl">
-            🐾
+    <div className="w-full rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-300/40">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+        <Cat size={14} /> Featured Cat
+      </span>
+      <h2 className="mt-4 text-2xl font-bold text-slate-900">Meet {pet.name}</h2>
+
+      <dl className="mt-4 flex flex-col gap-2.5">
+        <div className="flex items-center gap-2.5 text-sm text-slate-700">
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full ${isFemale ? "bg-pink-50 text-pink-500" : "bg-blue-50 text-blue-500"}`}>
+            <SexIcon size={14} />
+          </span>
+          {titleCase(pet.sex)}
+        </div>
+        {pet.breed && (
+          <div className="flex items-center gap-2.5 text-sm text-slate-700">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-50 text-purple-500">
+              <Cat size={14} />
+            </span>
+            {pet.breed}
           </div>
         )}
-        {pet.description && (
-          <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg line-clamp-4">
-            {pet.description}
-          </p>
+        {pet.age && (
+          <div className="flex items-center gap-2.5 text-sm text-slate-700">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+              <CalendarDays size={14} />
+            </span>
+            {pet.age}
+          </div>
         )}
-      </div>
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-stretch sm:justify-center">
-        <div className="rounded-2xl bg-slate-100 p-4 text-left sm:w-1/2">
-          <p className="text-sm font-semibold text-slate-700">Breed</p>
-          <p className="mt-2 text-lg text-slate-900">{pet.breed ?? "Unknown"}</p>
-        </div>
-        <div className="rounded-2xl bg-slate-100 p-4 text-left sm:w-1/2">
-          <p className="text-sm font-semibold text-slate-700">Sex</p>
-          <p className="mt-2 text-lg text-slate-900">{titleCase(pet.sex)}</p>
-        </div>
-      </div>
-    </section>
+      </dl>
+
+      {pet.description && (
+        <>
+          <hr className="my-4 border-slate-100" />
+          <p className="text-sm leading-6 text-slate-600 line-clamp-4">{pet.description}</p>
+        </>
+      )}
+
+      <a
+        href="/adopt/apply"
+        className="mt-5 flex items-center justify-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-orange-500/30 transition-colors hover:bg-orange-600">
+        <Heart size={16} className="fill-current" /> Adopt {pet.name}
+      </a>
+      <a
+        href={`/adopt/${pet.id}`}
+        className="mt-3 flex items-center justify-center gap-1 text-sm font-medium text-blue-600 hover:underline">
+        View {pet.name}&apos;s Profile →
+      </a>
+    </div>
   );
 }

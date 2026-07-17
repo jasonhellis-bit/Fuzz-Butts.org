@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { Menu, X, LogIn, LogOut, PawPrint } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Navigation() {
@@ -63,7 +63,7 @@ export default function Navigation() {
       className="sticky top-0 z-50 shadow-lg">
       <div className="relative max-w-7xl mx-auto px-4 h-16">
         {/* Logo */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center z-10 pl-4 md:pl-0">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 pl-4 md:pl-0">
           <span
             className="text-2xl sm:text-4xl select-none"
             style={{
@@ -73,6 +73,10 @@ export default function Navigation() {
             }}>
             Fuzz Butts
           </span>
+          <PawPrint
+            className="shrink-0 w-5 h-5 sm:w-7 sm:h-7 rotate-12 text-orange-400 fill-orange-400"
+            style={{ filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.4))" }}
+          />
         </div>
 
         {/* Desktop nav items */}

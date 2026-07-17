@@ -111,11 +111,18 @@ export default async function PetDetailPage({
             {pet.weight ? ` · ${pet.weight}` : ""}
           </p>
           {pet.description && <p className="mb-6 text-gray-700">{pet.description}</p>}
-          <Link
-            href="/adopt/apply"
-            className="inline-block rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700">
-            Start an Application
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              href="/adopt/apply"
+              className="inline-block rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700">
+              Start an Application
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="text-sm font-medium text-blue-600 hover:underline">
+              How does adoption work?
+            </Link>
+          </div>
         </div>
       </div>
     </div>
