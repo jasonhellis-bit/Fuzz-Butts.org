@@ -44,11 +44,18 @@ export default async function AdoptPage() {
       <p className="text-gray-600 text-center max-w-xl">
         Found a cat you love? Fill out an adoption application and we&apos;ll be in touch!
       </p>
-      <Link
-        href="/adopt/apply"
-        className="bg-blue-600 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
-        Start an Application
-      </Link>
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <Link
+          href="/adopt/apply"
+          className="bg-blue-600 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+          Start an Application
+        </Link>
+        <Link
+          href="/how-it-works"
+          className="text-sm font-medium text-blue-600 hover:underline">
+          How does adoption work?
+        </Link>
+      </div>
       <div className="w-full max-w-7xl px-4">
         {petsWithImages.length === 0 ? (
           <div className="flex items-center justify-center">

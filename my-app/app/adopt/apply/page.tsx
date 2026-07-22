@@ -181,7 +181,7 @@ export default function AdoptionApplicationPage() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-screen items-start justify-center bg-gray-50 px-4 pt-16 pb-16">
+      <div className="flex min-h-screen items-start justify-center px-4 pt-16 pb-16">
         <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6 sm:p-10 text-center">
           <div className="text-5xl mb-4">🐾</div>
           <h1 className="text-2xl font-bold mb-3">Application Received!</h1>
@@ -204,7 +204,7 @@ export default function AdoptionApplicationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen pb-16">
       {/* Page header */}
       <div className="bg-blue-600 text-white px-4 py-10 text-center">
         <div className="text-4xl mb-3">🐾</div>

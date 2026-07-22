@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #eef2fb;
   --foreground: #171717;
 }
 
@@ -14,13 +14,27 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image:
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNjAiIGhlaWdodD0iMjYwIiB2aWV3Qm94PSIwIDAgMjYwIDI2MCI+CiAgPGRlZnM+CiAgICA8ZyBpZD0icCI+CiAgICAgIDxjaXJjbGUgY3g9IjExIiBjeT0iNCIgcj0iMiIvPgogICAgICA8Y2lyY2xlIGN4PSIxOCIgY3k9IjgiIHI9IjIiLz4KICAgICAgPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iMiIvPgogICAgICA8cGF0aCBkPSJNOSAxMGE1IDUgMCAwIDEgNSA1djMuNWEzLjUgMy41IDAgMCAxLTYuODQgMS4wNDVRNi41MiAxNy40OCA0LjQ2IDE2Ljg0QTMuNSAzLjUgMCAwIDEgNS41IDEwWiIvPgogICAgPC9nPgogIDwvZGVmcz4KICA8ZyBmaWxsPSIjYWVjMmVhIiBmaWxsLW9wYWNpdHk9IjAuNTUiPgogICAgPHVzZSBocmVmPSIjcCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgsMjQpIHJvdGF0ZSgtMTgpIHNjYWxlKDEuNCkiLz4KICAgIDx1c2UgaHJlZj0iI3AiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MCwxMDApIHJvdGF0ZSgyNCkgc2NhbGUoMSkiLz4KICAgIDx1c2UgaHJlZj0iI3AiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1LDE3MCkgcm90YXRlKDU1KSBzY2FsZSgxLjIpIi8+CiAgICA8dXNlIGhyZWY9IiNwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTUsMjA1KSByb3RhdGUoLTQwKSBzY2FsZSgwLjg1KSIvPgogIDwvZz4KPC9zdmc+Cg=="),
+    linear-gradient(180deg, #f4f7fd 0%, #e8eefb 45%, #eaf0fc 100%);
+  background-repeat: repeat, no-repeat;
+  background-attachment: fixed, scroll;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

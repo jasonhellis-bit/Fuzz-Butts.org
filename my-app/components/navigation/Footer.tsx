@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="sticky bottom-0 bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-500">
+    <footer className="bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-500">
       <div className="relative flex items-center px-6">
         <a
           href="https://www.linkedin.com/company/web-by-ellis/"
