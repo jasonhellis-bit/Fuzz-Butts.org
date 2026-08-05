@@ -29,7 +29,16 @@ const FIELD_LABELS: Record<string, string> = {
   disposition_reason: "Disposition reason",
   description: "Description",
   notes: "Notes",
+  adoption_fee: "Adoption fee",
 };
+
+function parseAdoptionFee(formData: FormData): number | null {
+  const raw = formData.get("adoption_fee") as string;
+  if (raw === null) return null;
+  const digits = raw.replace(/[^0-9]/g, "");
+  if (digits === "") return null;
+  return parseInt(digits, 10);
+}
 
 function buildUpdateDescription(
   old: Record<string, unknown>,
@@ -67,6 +76,7 @@ export async function createPet(
   const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
   const notes = (formData.get("notes") as string) || null;
+  const adoption_fee = parseAdoptionFee(formData);
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
   const intake_reason = formData.get("intake_reason") as string;
@@ -91,6 +101,7 @@ export async function createPet(
       weight,
       description,
       notes,
+      adoption_fee,
       status,
       intake_date,
       intake_reason,
@@ -147,6 +158,7 @@ export async function updatePet(
   const weight = (formData.get("weight") as string) || null;
   const description = (formData.get("description") as string) || null;
   const notes = (formData.get("notes") as string) || null;
+  const adoption_fee = parseAdoptionFee(formData);
   const status = formData.get("status") as string;
   const intake_date = formData.get("intake_date") as string;
   const intake_reason = formData.get("intake_reason") as string;
@@ -163,7 +175,7 @@ export async function updatePet(
   const { data: existing, error: fetchError } = await adminClient
     .from("pets")
     .select(
-      "name, pet_type, sex, breed, age, weight, description, notes, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason",
+      "name, pet_type, sex, breed, age, weight, description, notes, adoption_fee, status, intake_date, intake_reason, spayed_neutered, spay_neuter_date, disposition_date, disposition_reason",
     )
     .eq("id", id)
     .single();
@@ -181,6 +193,7 @@ export async function updatePet(
       weight,
       description,
       notes,
+      adoption_fee,
       status,
       intake_date,
       intake_reason,
@@ -238,6 +251,7 @@ export async function updatePet(
       weight,
       description,
       notes,
+      adoption_fee,
       status,
       intake_date,
       intake_reason,

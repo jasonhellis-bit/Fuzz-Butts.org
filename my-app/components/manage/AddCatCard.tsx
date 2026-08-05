@@ -46,6 +46,12 @@ const DISPOSITION_REASONS: DispositionReason[] = [
   "other",
 ];
 
+function formatWholeDollar(raw: string): string {
+  const digits = raw.replace(/[^0-9]/g, "");
+  if (digits === "") return "";
+  return `$${parseInt(digits, 10)}`;
+}
+
 function titleCase(s: string) {
   return s
     .split(/[\s_]/)
@@ -63,6 +69,7 @@ const defaultFields = {
   weight: "",
   description: "",
   notes: "",
+  adoption_fee: "",
 };
 
 export default function AddCatCard() {
@@ -317,6 +324,19 @@ export default function AddCatCard() {
               placeholder="e.g. About 5 lbs"
               value={fields.weight}
               onChange={(e) => setField("weight", e.target.value)}
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Adoption Fee</label>
+            <input
+              name="adoption_fee"
+              type="text"
+              inputMode="numeric"
+              className={inputCls}
+              placeholder="e.g. $75"
+              value={fields.adoption_fee}
+              onChange={(e) => setField("adoption_fee", e.target.value)}
+              onBlur={(e) => setField("adoption_fee", formatWholeDollar(e.target.value))}
             />
           </div>
           <div>

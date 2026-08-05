@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Get-ChildItem -Path \"c:\\\\src\\\\demo-ai\\\\my-app\" -Recurse -Name)"
+      "Bash(Get-ChildItem -Path \"c:\\\\src\\\\demo-ai\\\\my-app\" -Recurse -Name)",
+      "Bash(grep -iE \"actions/catActions|actions\\\\.ts$\")",
+      "Bash(npx tsc *)"
     ]
   }
 }
