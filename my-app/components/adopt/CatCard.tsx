@@ -65,6 +65,9 @@ export default function CatCard({ pet }: { pet: Pet }) {
         </div>
         {pet.breed && <p className="text-gray-600 mb-1">{pet.breed}</p>}
         <p className="text-gray-500 text-sm capitalize">{pet.sex}{pet.age ? ` · ${pet.age}` : ""}{pet.weight ? ` · ${pet.weight}` : ""}</p>
+        {pet.adoption_fee != null && (
+          <p className="text-sm text-gray-700 mt-1">Adoption fee: ${pet.adoption_fee}</p>
+        )}
         {pet.description && (
           <p className={`text-gray-700 mt-2 text-sm ${expanded ? "" : "line-clamp-3"}`}>{pet.description}</p>
         )}

@@ -29,6 +29,12 @@ const STATUS_COLORS: Record<PetStatus, string> = {
   "reclaimed by owner": "bg-gray-100 text-gray-600",
 };
 
+function formatWholeDollar(raw: string): string {
+  const digits = raw.replace(/[^0-9]/g, "");
+  if (digits === "") return "";
+  return `$${parseInt(digits, 10)}`;
+}
+
 function titleCase(s: string) {
   return s
     .split(/[\s_]/)
@@ -100,6 +106,8 @@ function petFields(pet: Pet) {
     weight: pet.weight ?? "",
     description: pet.description ?? "",
     notes: pet.notes ?? "",
+    adoption_fee:
+      pet.adoption_fee != null ? formatWholeDollar(String(pet.adoption_fee)) : "",
   };
 }
 
@@ -256,6 +264,11 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
             {pet.age ? ` · ${pet.age}` : ""}
             {pet.weight ? ` · ${pet.weight}` : ""}
           </p>
+          {pet.adoption_fee != null && (
+            <p className="text-sm text-gray-500 mb-1">
+              Adoption fee: ${pet.adoption_fee}
+            </p>
+          )}
           <p className="text-sm text-gray-500 mb-1">
             Intake: {formatDate(pet.intake_date)}
           </p>
@@ -541,6 +554,19 @@ export default function ManageCatCard({ pet }: { pet: Pet }) {
               placeholder="e.g. About 5 lbs"
               value={fields.weight}
               onChange={(e) => setField("weight", e.target.value)}
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Adoption Fee</label>
+            <input
+              name="adoption_fee"
+              type="text"
+              inputMode="numeric"
+              className={inputCls}
+              placeholder="e.g. $75"
+              value={fields.adoption_fee}
+              onChange={(e) => setField("adoption_fee", e.target.value)}
+              onBlur={(e) => setField("adoption_fee", formatWholeDollar(e.target.value))}
             />
           </div>
           <div>

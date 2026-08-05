@@ -110,6 +110,9 @@ export default async function PetDetailPage({
             {pet.age ? ` · ${pet.age}` : ""}
             {pet.weight ? ` · ${pet.weight}` : ""}
           </p>
+          {pet.adoption_fee != null && (
+            <p className="mb-4 text-sm text-gray-700">Adoption fee: ${pet.adoption_fee}</p>
+          )}
           {pet.description && <p className="mb-6 text-gray-700">{pet.description}</p>}
           <div className="flex flex-wrap items-center gap-4">
             <Link
