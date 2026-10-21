@@ -1,8 +1,14 @@
 import { unstable_cache } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import Hero from "@/components/home/Hero";
-import CatsRotator, { type RotatorPet } from "@/components/home/CatsRotator";
+import Pillars from "@/components/home/Pillars";
+import FeaturedCats, { type AdoptableCat } from "@/components/home/FeaturedCats";
+import MissionCard from "@/components/home/MissionCard";
+import GetInvolvedBand from "@/components/home/GetInvolvedBand";
 import { type FeaturedPet } from "@/components/home/FeaturedAdoption";
+
+// The grid shows four cats; fetch one extra so the hero's featured cat can be left out.
+const FEATURED_CATS_SHOWN = 4;
 
 const getFeaturedPet = unstable_cache(
   async (): Promise<FeaturedPet | null> => {
@@ -63,14 +69,14 @@ const getHomeStats = unstable_cache(
 );
 
 const getAdoptableCats = unstable_cache(
-  async (): Promise<RotatorPet[]> => {
+  async (): Promise<AdoptableCat[]> => {
     const adminClient = createAdminClient();
     const { data: pets } = await adminClient
       .from("pets")
-      .select("id, name, sex, age, breed, created_at, pet_images(storage_path, is_primary, display_order)")
+      .select("id, name, sex, age, created_at, pet_images(storage_path, is_primary, display_order)")
       .in("status", ["available for adoption", "pending adoption"])
       .order("created_at", { ascending: false })
-      .limit(16);
+      .limit(FEATURED_CATS_SHOWN + 1);
 
     const twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
 
@@ -85,13 +91,12 @@ const getAdoptableCats = unstable_cache(
         name: pet.name,
         sex: pet.sex,
         age: pet.age,
-        breed: pet.breed,
         primary_image_url,
         isNew: new Date(pet.created_at).getTime() > twoWeeksAgo,
       };
     });
   },
-  ["adoptable-cats"],
+  ["adoptable-cats-home"],
   { tags: ["adoptable-cats"], revalidate: 3600 }
 );
 
@@ -102,10 +107,17 @@ export default async function Home() {
     getAdoptableCats(),
   ]);
 
+  const gridCats = cats.filter((c) => c.id !== pet?.id).slice(0, FEATURED_CATS_SHOWN);
+
   return (
     <div className="flex flex-col">
-      <Hero pet={pet} stats={stats} />
-      <CatsRotator pets={cats} />
+      <Hero pet={pet} />
+      <Pillars />
+      <section className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-16 sm:px-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <FeaturedCats cats={gridCats} />
+        <MissionCard stats={stats} />
+      </section>
+      <GetInvolvedBand />
     </div>
   );
 }

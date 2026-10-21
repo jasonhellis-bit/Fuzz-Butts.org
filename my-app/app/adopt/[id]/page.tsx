@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Pet } from "@/types/types";
+import Button from "@/components/ui/Button";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 interface PetImageRow {
   storage_path: string;
@@ -80,10 +82,10 @@ export default async function PetDetailPage({
     <div className="min-h-screen flex flex-col items-center gap-6 py-16 px-4">
       <Link
         href="/adopt"
-        className="w-full max-w-3xl self-start text-sm text-blue-600 hover:underline">
+        className="w-full max-w-3xl self-start text-sm font-semibold text-brand hover:underline sm:self-center">
         ← Back to all cats
       </Link>
-      <div className="w-full max-w-3xl overflow-hidden rounded-lg bg-white shadow-md">
+      <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-line bg-surface shadow-sm shadow-ink/5">
         {pet.primary_image_url ? (
           <img
             src={pet.primary_image_url}
@@ -91,38 +93,36 @@ export default async function PetDetailPage({
             className="h-96 w-full object-cover"
           />
         ) : (
-          <div className="flex h-96 w-full items-center justify-center bg-gray-100 text-6xl text-gray-300">
+          <div className="flex h-96 w-full items-center justify-center bg-line/50 text-6xl text-gold/50">
             🐾
           </div>
         )}
-        <div className="p-6">
+        <div className="p-6 sm:p-8">
           <div className="mb-2 flex items-start justify-between gap-2">
-            <h1 className="text-3xl font-bold">{pet.name}</h1>
+            <SectionHeading as="h1">{pet.name}</SectionHeading>
             {pet.status === "pending adoption" && (
-              <span className="whitespace-nowrap rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
+              <span className="whitespace-nowrap rounded-full bg-brand-tint px-2.5 py-1 text-xs font-semibold text-brand">
                 Pending Adoption
               </span>
             )}
           </div>
-          {pet.breed && <p className="mb-1 text-gray-600">{pet.breed}</p>}
-          <p className="mb-4 text-sm capitalize text-gray-500">
+          {pet.breed && <p className="mb-1 text-lg text-ink">{pet.breed}</p>}
+          <p className="mb-4 text-sm capitalize text-ink-muted">
             {pet.sex}
             {pet.age ? ` · ${pet.age}` : ""}
             {pet.weight ? ` · ${pet.weight}` : ""}
           </p>
           {pet.adoption_fee != null && (
-            <p className="mb-4 text-sm text-gray-700">Adoption fee: ${pet.adoption_fee}</p>
+            <p className="mb-4 text-sm text-ink">Adoption fee: ${pet.adoption_fee}</p>
           )}
-          {pet.description && <p className="mb-6 text-gray-700">{pet.description}</p>}
+          {pet.description && <p className="mb-6 leading-7 text-ink">{pet.description}</p>}
           <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/adopt/apply"
-              className="inline-block rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700">
+            <Button href="/adopt/apply" chevron>
               Start an Application
-            </Link>
+            </Button>
             <Link
               href="/how-it-works"
-              className="text-sm font-medium text-blue-600 hover:underline">
+              className="font-semibold text-brand hover:underline">
               How does adoption work?
             </Link>
           </div>

@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pacifico } from "next/font/google";
+import { Allura, Lora, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/navigation/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const lora = Lora({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
-const pacifico = Pacifico({
-  variable: "--font-pacifico",
+const allura = Allura({
+  variable: "--font-allura",
   subsets: ["latin"],
   weight: "400",
 });
@@ -77,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}>
+      className={`${lora.variable} ${playfair.variable} ${allura.variable} antialiased`}>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"

@@ -1,107 +1,47 @@
-import { Fragment } from "react";
-import { Heart, HeartHandshake, Cat, PawPrint } from "lucide-react";
+import { Heart, PawPrint } from "lucide-react";
+import Button from "@/components/ui/Button";
+import HeartDoodle from "@/components/ui/HeartDoodle";
 import FeaturedAdoption, {
   type FeaturedPet,
 } from "@/components/home/FeaturedAdoption";
 
-interface HeroStats {
-  catsRescued: number;
-  successfulAdoptions: number;
-  availableNow: number;
-}
-
-export default function Hero({
-  pet,
-  stats,
-}: {
-  pet: FeaturedPet | null;
-  stats: HeroStats;
-}) {
-  const statItems = [
-    {
-      icon: <Cat size={22} />,
-      value: stats.catsRescued,
-      label: "Cats Rescued",
-    },
-    ...(stats.successfulAdoptions > 0
-      ? [
-          {
-            icon: <HeartHandshake size={22} />,
-            value: stats.successfulAdoptions,
-            label: "Successful Adoptions",
-          },
-        ]
-      : []),
-    {
-      icon: <PawPrint size={22} />,
-      value: stats.availableNow,
-      label: "Available Now",
-    },
-  ];
-
+export default function Hero({ pet }: { pet: FeaturedPet | null }) {
   return (
-    <section className="relative flex w-full flex-col lg:h-[clamp(480px,68vh,1024px)] lg:flex-row lg:items-stretch">
-      <div className="flex flex-col items-start justify-center gap-5 px-6 py-10 sm:px-10 lg:w-[40%] lg:py-8 lg:pl-12 lg:pr-8 xl:pl-20">
-        <span className="inline-flex items-center gap-2 text-lg font-bold text-blue-600 sm:text-xl">
-          <Heart
-            size={20}
-            className="shrink-0 fill-orange-500 text-orange-500"
-          />{" "}
-          Saving lives. One cat at a time.
-        </span>
-
-        <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl">
-          Find Your New{" "}
-          <span className="relative inline-block">
-            Best Friend
-            <svg
-              className="absolute -bottom-2 left-0 w-full text-blue-500"
-              viewBox="0 0 200 12"
-              preserveAspectRatio="none"
-              aria-hidden="true">
-              <path
-                d="M2 8c40-6 156-6 196 0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
+    <section className="relative grid w-full lg:min-h-[clamp(540px,74vh,820px)] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+      {/* Copy column — left padding lines up with the nav's max-w-7xl container on wide screens */}
+      <div className="relative z-10 flex flex-col items-start justify-center gap-5 px-6 py-12 sm:px-10 lg:py-16 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+1.5rem))] lg:pr-4">
+        <h1 className="leading-[0.95]">
+          <span className="block text-5xl font-bold tracking-tight text-brand sm:text-6xl xl:text-7xl">
+            Second Chances.
+          </span>
+          <span className="mt-1 block font-script text-6xl font-normal text-gold sm:text-7xl xl:text-[5.5rem]">
+            Brighter Tomorrows.
           </span>
         </h1>
 
-        <p className="max-w-md text-lg leading-7 text-slate-600">
-          Every cat deserves a safe, loving home. Browse our adoptable cats and
-          give a furry friend their second chance.
+        <p className="flex items-center gap-2 font-display text-2xl font-semibold text-brand sm:text-[1.7rem]">
+          Small Butts. Big Impact.
+          <HeartDoodle className="h-8 w-8 -translate-y-1 text-gold" />
         </p>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <a
-            href="/adopt"
-            className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/30 transition-colors hover:bg-orange-600">
-            <PawPrint size={18} /> Adopt a Cat Today
-          </a>
-          <a
-            href="/how-it-works"
-            className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-600 shadow-sm transition-colors hover:bg-blue-50">
-            <HeartHandshake size={18} /> How Adoption Works
-          </a>
-        </div>
+        <p className="max-w-md text-lg leading-8 text-ink">
+          Fuzz Butts Cat Rescue is a 501(c)(3) nonprofit saving the lives of
+          cats in the West Valley through rescue, medical care, and adoption.
+        </p>
 
-        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-6">
-          {statItems.map((item, i) => (
-            <Fragment key={item.label}>
-              {i > 0 && (
-                <div className="hidden h-16 w-px self-center bg-slate-300 sm:block" />
-              )}
-              <Stat icon={item.icon} value={item.value} label={item.label} />
-            </Fragment>
-          ))}
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <Button href="/adopt" chevron>
+            View Adoptable Cats
+          </Button>
+          <Button href="/donate" variant="outline">
+            Donate Now <Heart size={18} aria-hidden="true" />
+          </Button>
         </div>
       </div>
 
-      <div className="static px-6 sm:px-10 lg:relative lg:h-full lg:w-[60%] lg:px-0">
-        <div className="aspect-[4/5] w-full overflow-hidden bg-slate-100 shadow-2xl shadow-slate-300/50 lg:aspect-auto lg:h-full">
+      {/* Featured cat photo, fading into the cream background toward the copy */}
+      <div className="relative px-6 pb-10 sm:px-10 lg:p-0">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-line/50 lg:absolute lg:inset-0 lg:aspect-auto lg:rounded-none">
           {pet?.primary_image_url ? (
             <img
               src={pet.primary_image_url}
@@ -110,36 +50,24 @@ export default function Hero({
               loading="eager"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-8xl text-slate-300">
-              🐾
+            <div className="flex h-full w-full items-center justify-center">
+              <PawPrint className="h-24 w-24 text-gold/50" aria-hidden="true" />
             </div>
           )}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 hidden w-2/5 bg-gradient-to-r from-cream via-cream/60 to-transparent lg:block"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-24 bg-gradient-to-t from-cream/70 to-transparent lg:block"
+            aria-hidden="true"
+          />
         </div>
 
-        <div className="mt-6 lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-64 xl:right-12 xl:w-72">
+        <div className="mt-6 sm:mx-auto sm:max-w-sm lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-80 xl:right-12">
           <FeaturedAdoption pet={pet} />
         </div>
       </div>
     </section>
-  );
-}
-
-function Stat({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: number;
-  label: string;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-1.5 text-center">
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-        {icon}
-      </span>
-      <p className="text-3xl font-extrabold text-blue-600">{value}</p>
-      <p className="text-xs text-slate-500">{label}</p>
-    </div>
   );
 }

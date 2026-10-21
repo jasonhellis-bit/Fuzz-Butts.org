@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { Pet } from "@/types/types";
+import { buttonClasses } from "@/components/ui/Button";
 
 export default function CatCard({ pet }: { pet: Pet }) {
   const images = pet.image_urls && pet.image_urls.length > 0
@@ -30,9 +32,9 @@ export default function CatCard({ pet }: { pet: Pet }) {
   return (
     <div
       id={pet.id}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+      className="bg-surface border border-line rounded-2xl shadow-sm shadow-ink/5 overflow-hidden cursor-pointer transition-shadow hover:shadow-lg"
       onClick={() => setExpanded((e) => !e)}>
-      <div className="relative w-full h-72 bg-gray-100">
+      <div className="relative w-full h-72 bg-line/50">
         {images.length > 0 ? (
           <img
             key={currentIdx}
@@ -41,7 +43,7 @@ export default function CatCard({ pet }: { pet: Pet }) {
             className={`w-full h-72 object-cover transition-opacity duration-500 ${visible ? "opacity-100" : "opacity-0"}`}
           />
         ) : (
-          <div className="w-full h-72 flex items-center justify-center text-5xl text-gray-300">🐾</div>
+          <div className="w-full h-72 flex items-center justify-center text-5xl text-gold/50">🐾</div>
         )}
         {images.length > 1 && (
           <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
@@ -54,31 +56,31 @@ export default function CatCard({ pet }: { pet: Pet }) {
           </div>
         )}
       </div>
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h2 className="text-xl font-bold">{pet.name}</h2>
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h2 className="text-2xl font-bold text-brand">{pet.name}</h2>
           {pet.status === "pending adoption" && (
-            <span className="text-xs px-2 py-1 rounded-full font-medium bg-blue-100 text-blue-700 whitespace-nowrap">
+            <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-brand-tint text-brand whitespace-nowrap">
               Pending Adoption
             </span>
           )}
         </div>
-        {pet.breed && <p className="text-gray-600 mb-1">{pet.breed}</p>}
-        <p className="text-gray-500 text-sm capitalize">{pet.sex}{pet.age ? ` · ${pet.age}` : ""}{pet.weight ? ` · ${pet.weight}` : ""}</p>
+        {pet.breed && <p className="text-ink mb-1">{pet.breed}</p>}
+        <p className="text-ink-muted text-sm capitalize">{pet.sex}{pet.age ? ` · ${pet.age}` : ""}{pet.weight ? ` · ${pet.weight}` : ""}</p>
         {pet.adoption_fee != null && (
-          <p className="text-sm text-gray-700 mt-1">Adoption fee: ${pet.adoption_fee}</p>
+          <p className="text-sm text-ink mt-1">Adoption fee: ${pet.adoption_fee}</p>
         )}
         {pet.description && (
-          <p className={`text-gray-700 mt-2 text-sm ${expanded ? "" : "line-clamp-3"}`}>{pet.description}</p>
+          <p className={`text-ink mt-3 text-sm leading-6 ${expanded ? "" : "line-clamp-3"}`}>{pet.description}</p>
         )}
         {pet.description && (
-          <p className="text-xs text-blue-500 mt-1">{expanded ? "Show less" : "Show more"}</p>
+          <p className="text-xs font-semibold text-gold-deep mt-1">{expanded ? "Show less" : "Show more"}</p>
         )}
         <Link
           href={`/adopt/${pet.id}`}
           onClick={(e) => e.stopPropagation()}
-          className="inline-block text-xs font-medium text-blue-600 hover:underline mt-2">
-          View full profile →
+          className={`${buttonClasses("primary", "sm")} mt-4`}>
+          View Full Profile <ChevronRight size={14} aria-hidden="true" />
         </Link>
       </div>
     </div>

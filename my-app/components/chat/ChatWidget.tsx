@@ -29,7 +29,7 @@ function renderContent(text: string) {
       <a
         key={match.index}
         href={match[2]}
-        className="text-blue-500 underline hover:text-blue-700"
+        className="text-brand font-semibold underline hover:text-brand-dark"
         onClick={(e) => e.stopPropagation()}>
         {match[1]}
       </a>
@@ -103,8 +103,8 @@ export default function ChatWidget() {
   return (
     <div className="fixed bottom-20 right-6 z-50 flex flex-col items-end gap-3">
       {isOpen && (
-        <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col w-80 sm:w-96 h-[500px]">
-          <div className="bg-purple-600 rounded-t-2xl px-4 pt-4 pb-3 flex flex-col items-center relative">
+        <div className="bg-surface rounded-2xl shadow-2xl border border-line flex flex-col w-80 sm:w-96 h-[500px]">
+          <div className="bg-brand rounded-t-2xl px-4 pt-4 pb-3 flex flex-col items-center relative">
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-3 right-3 text-white/80 hover:text-white transition-colors">
@@ -114,7 +114,7 @@ export default function ChatWidget() {
               🐱
             </div>
             <span className="text-white font-semibold text-sm">Find Your Cat</span>
-            <span className="text-purple-200 text-xs mt-0.5">Fuzz Butts Cat Rescue</span>
+            <span className="text-gold-light text-xs mt-0.5">Fuzz Butts Cat Rescue</span>
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
@@ -125,8 +125,8 @@ export default function ChatWidget() {
                 <div
                   className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-purple-600 text-white rounded-br-sm"
-                      : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                      ? "bg-brand text-white rounded-br-sm"
+                      : "bg-cream border border-line text-ink rounded-bl-sm"
                   }`}>
                   {renderContent(msg.content)}
                 </div>
@@ -134,15 +134,15 @@ export default function ChatWidget() {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 rounded-2xl rounded-bl-sm px-3 py-2">
-                  <Loader2 size={16} className="animate-spin text-gray-400" />
+                <div className="bg-cream border border-line rounded-2xl rounded-bl-sm px-3 py-2">
+                  <Loader2 size={16} className="animate-spin text-ink-muted" />
                 </div>
               </div>
             )}
             <div ref={bottomRef} />
           </div>
 
-          <div className="border-t border-gray-100 px-3 py-2 flex gap-2 items-end">
+          <div className="border-t border-line px-3 py-2 flex gap-2 items-end">
             <textarea
               ref={inputRef}
               rows={1}
@@ -150,12 +150,12 @@ export default function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type a message…"
-              className="flex-1 resize-none text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 max-h-24"
+              className="flex-1 resize-none text-sm border border-line rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold/60 max-h-24"
             />
             <button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="bg-purple-600 text-white rounded-xl p-2 hover:bg-purple-700 disabled:opacity-40 transition-colors shrink-0">
+              className="bg-brand text-white rounded-xl p-2 hover:bg-brand-dark disabled:opacity-40 transition-colors shrink-0">
               <Send size={16} />
             </button>
           </div>
@@ -164,7 +164,7 @@ export default function ChatWidget() {
 
       <button
         onClick={() => setIsOpen((o) => !o)}
-        className="bg-purple-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-purple-700 transition-colors">
+        className="bg-brand text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-brand-dark transition-colors">
         {isOpen ? <X size={22} /> : <MessageCircle size={22} />}
       </button>
     </div>

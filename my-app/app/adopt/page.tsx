@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { PawPrint } from "lucide-react";
 import CatCard from "@/components/adopt/CatCard";
+import Button from "@/components/ui/Button";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { Pet } from "@/types/types";
 
 export const dynamic = "force-dynamic";
@@ -39,34 +42,32 @@ export default async function AdoptPage() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col items-center gap-8 py-16">
-      <h1 className="text-4xl font-bold">Adopt a Cat</h1>
-      <p className="text-gray-600 text-center max-w-xl">
+    <div className="min-h-screen flex flex-col items-center gap-6 py-16">
+      <SectionHeading as="h1" size="lg">Adopt a Cat</SectionHeading>
+      <p className="text-ink-muted text-lg text-center max-w-xl px-4">
         Found a cat you love? Fill out an adoption application and we&apos;ll be in touch!
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Link
-          href="/adopt/apply"
-          className="bg-blue-600 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+        <Button href="/adopt/apply" chevron>
           Start an Application
-        </Link>
+        </Button>
         <Link
           href="/how-it-works"
-          className="text-sm font-medium text-blue-600 hover:underline">
+          className="font-semibold text-brand hover:underline">
           How does adoption work?
         </Link>
       </div>
-      <div className="w-full max-w-7xl px-4">
+      <div className="w-full max-w-7xl px-4 mt-4">
         {petsWithImages.length === 0 ? (
           <div className="flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-md p-8 text-center max-w-sm">
-              <div className="text-5xl mb-4">🐾</div>
-              <h2 className="text-xl font-semibold text-gray-700 mb-2">No cats available at this time</h2>
-              <p className="text-gray-500 text-sm">Check back soon — new rescues are added regularly.</p>
+            <div className="bg-surface border border-line rounded-2xl shadow-sm p-8 text-center max-w-sm">
+              <PawPrint className="mx-auto mb-4 h-12 w-12 text-gold" aria-hidden="true" />
+              <h2 className="text-xl font-bold text-brand mb-2">No cats available at this time</h2>
+              <p className="text-ink-muted text-sm">Check back soon — new rescues are added regularly.</p>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {petsWithImages.map((pet) => (
               <CatCard key={pet.id} pet={pet} />
             ))}

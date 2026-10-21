@@ -40,15 +40,15 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen items-start justify-center px-4 pt-16">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Admin Login</h1>
-        <p className="text-gray-500 text-center mb-6">
+      <div className="w-full max-w-md bg-surface border border-line rounded-2xl shadow-sm shadow-ink/5 p-8">
+        <h1 className="text-3xl font-bold text-brand text-center mb-2">Admin Login</h1>
+        <p className="text-ink-muted text-center mb-6">
           Sign in to access the shelter dashboard.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="text-sm font-medium text-ink">
               Email
             </label>
             <input
@@ -57,16 +57,16 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
-              className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="border border-line bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold"
             />
           </div>
 
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="text-sm font-medium text-ink">
                 Password
               </label>
-              <Link href="/login/forgot-password" className="text-xs text-blue-600 hover:underline">
+              <Link href="/login/forgot-password" className="text-xs text-brand font-semibold hover:underline">
                 Forgot password?
               </Link>
             </div>
@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="border border-line bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-gray-800 text-white rounded py-2 text-sm font-medium hover:bg-gray-700 transition-colors mt-2 disabled:opacity-50"
+            className="bg-brand text-white rounded-full py-2.5 text-sm font-semibold hover:bg-brand-dark transition-colors mt-2 disabled:opacity-50"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>

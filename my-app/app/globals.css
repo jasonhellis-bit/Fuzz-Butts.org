@@ -1,32 +1,62 @@
 @import "tailwindcss";
 
+/*
+ * Fuzz Butts theme tokens.
+ * Gold (#c3893f) is decorative only on cream (2.8:1 contrast) — use it for
+ * icons, hearts, rules and large script text. Use gold-deep for small gold text.
+ */
 :root {
-  --background: #eef2fb;
-  --foreground: #171717;
+  --brand: #7a1426;
+  --brand-dark: #5e0d1c;
+  --brand-tint: #f5e6e2;
+  --gold: #c3893f;
+  --gold-deep: #8c5a1e;
+  --gold-light: #e8c99a;
+  --cream: #fbf5ec;
+  --surface: #fffbf5;
+  --line: #eadbc6;
+  --ink: #3b2a26;
+  --ink-muted: #6e5a52;
+
+  --background: var(--cream);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-tint: var(--brand-tint);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-light: var(--gold-light);
+  --color-cream: var(--cream);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-playfair);
+  --font-script: var(--font-allura);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: #ededed;
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
   }
 }
 
 body {
   background-color: var(--background);
   background-image:
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNjAiIGhlaWdodD0iMjYwIiB2aWV3Qm94PSIwIDAgMjYwIDI2MCI+CiAgPGRlZnM+CiAgICA8ZyBpZD0icCI+CiAgICAgIDxjaXJjbGUgY3g9IjExIiBjeT0iNCIgcj0iMiIvPgogICAgICA8Y2lyY2xlIGN4PSIxOCIgY3k9IjgiIHI9IjIiLz4KICAgICAgPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iMiIvPgogICAgICA8cGF0aCBkPSJNOSAxMGE1IDUgMCAwIDEgNSA1djMuNWEzLjUgMy41IDAgMCAxLTYuODQgMS4wNDVRNi41MiAxNy40OCA0LjQ2IDE2Ljg0QTMuNSAzLjUgMCAwIDEgNS41IDEwWiIvPgogICAgPC9nPgogIDwvZGVmcz4KICA8ZyBmaWxsPSIjYWVjMmVhIiBmaWxsLW9wYWNpdHk9IjAuNTUiPgogICAgPHVzZSBocmVmPSIjcCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgsMjQpIHJvdGF0ZSgtMTgpIHNjYWxlKDEuNCkiLz4KICAgIDx1c2UgaHJlZj0iI3AiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MCwxMDApIHJvdGF0ZSgyNCkgc2NhbGUoMSkiLz4KICAgIDx1c2UgaHJlZj0iI3AiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1LDE3MCkgcm90YXRlKDU1KSBzY2FsZSgxLjIpIi8+CiAgICA8dXNlIGhyZWY9IiNwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTUsMjA1KSByb3RhdGUoLTQwKSBzY2FsZSgwLjg1KSIvPgogIDwvZz4KPC9zdmc+Cg=="),
-    linear-gradient(180deg, #f4f7fd 0%, #e8eefb 45%, #eaf0fc 100%);
-  background-repeat: repeat, no-repeat;
-  background-attachment: fixed, scroll;
+    linear-gradient(180deg, #fdf9f3 0%, #fbf5ec 45%, #f8efe2 100%);
+  background-repeat: no-repeat;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Georgia, serif;
   min-height: 100vh;
 }
 
