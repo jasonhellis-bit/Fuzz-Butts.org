@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -139,21 +140,26 @@ export default function Navigation() {
   );
 }
 
-// Text lockup standing in for the illustrated logo: serif "Fuzz", script
-// "Butts", and a small "Cat Rescue" line between gold rules.
+// Illustrated logo on a tab that hangs below the nav bar. The link reserves
+// the tab's width in the row; the tab itself is absolutely positioned so it
+// can overflow the bar's fixed height. The tab background matches the PNG's
+// opaque beige so the image edges disappear.
 function Logo({ onClick }: { onClick: () => void }) {
   return (
-    <Link href="/" onClick={onClick} aria-label="Fuzz Butts Cat Rescue — Home" className="flex shrink-0 flex-col items-center">
-      <span className="flex items-baseline leading-none">
-        <span className="font-display text-[1.75rem] font-bold tracking-tight text-brand sm:text-[2rem]">
-          Fuzz
-        </span>
-        <span className="-ml-0.5 font-script text-[2.4rem] text-gold sm:text-[2.75rem]">Butts</span>
-      </span>
-      <span className="-mt-1 flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.35em] text-ink">
-        <span className="h-px w-5 bg-gold" aria-hidden="true" />
-        Cat Rescue
-        <span className="h-px w-5 bg-gold" aria-hidden="true" />
+    <Link
+      href="/"
+      onClick={onClick}
+      aria-label="Fuzz Butts Cat Rescue — Home"
+      className="relative w-[154px] shrink-0 self-stretch lg:w-[204px]">
+      <span className="absolute left-0 top-0 z-10 rounded-b-2xl bg-[#f6ebda] px-3 pb-2 pt-2 shadow-md shadow-ink/10">
+        <Image
+          src="/fuzz_butts_logo_cropped.png"
+          alt="Fuzz Butts Cat Rescue"
+          width={530}
+          height={327}
+          priority
+          className="h-auto w-[130px] lg:w-[180px]"
+        />
       </span>
     </Link>
   );
