@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Heart, PawPrint } from "lucide-react";
 import Button from "@/components/ui/Button";
 import HeartDoodle from "@/components/ui/HeartDoodle";
@@ -10,6 +11,15 @@ export default function Hero({ pet }: { pet: FeaturedPet | null }) {
     <section className="relative grid w-full lg:min-h-[clamp(540px,74vh,820px)] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
       {/* Copy column — left padding lines up with the nav's max-w-7xl container on wide screens */}
       <div className="relative z-10 flex flex-col items-start justify-center gap-5 px-6 py-12 sm:px-10 lg:py-16 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+1.5rem))] lg:pr-4">
+        <Image
+          src="/fuzz_butts_logo_transparent.png"
+          alt="Fuzz Butts Cat Rescue"
+          width={530}
+          height={327}
+          priority
+          className="h-auto w-[220px] sm:w-[260px] xl:w-[300px]"
+        />
+
         <h1 className="leading-[0.95]">
           <span className="block text-5xl font-bold tracking-tight text-brand sm:text-6xl xl:text-7xl">
             Second Chances.

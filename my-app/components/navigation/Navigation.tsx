@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -36,27 +35,17 @@ export default function Navigation() {
   const navItems = [
     { label: "About", href: "/about", active: pathname === "/about" },
     { label: "Adopt", href: "/adopt", active: pathname.startsWith("/adopt") },
-    {
-      label: "How It Works",
-      href: "/how-it-works",
-      active: pathname === "/how-it-works",
-    },
+    { label: "How It Works", href: "/how-it-works", active: pathname === "/how-it-works" },
     { label: "Contact", href: "/contact", active: pathname === "/contact" },
     ...(isLoggedIn
-      ? [
-          {
-            label: "Admin",
-            href: "/admin/manage/home",
-            active: pathname.startsWith("/admin"),
-          },
-        ]
+      ? [{ label: "Admin", href: "/admin/manage/home", active: pathname.startsWith("/admin") }]
       : []),
   ];
 
   const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-line bg-parchment shadow-sm shadow-ink/5">
+    <nav className="sticky top-0 z-50 border-b border-line bg-cream/95 shadow-sm shadow-ink/5 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
         <Logo onClick={closeMenu} />
 
@@ -109,7 +98,7 @@ export default function Navigation() {
 
       {/* Mobile dropdown menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-line bg-parchment px-4 pb-5 lg:hidden">
+        <div className="border-t border-line bg-cream px-4 pb-5 lg:hidden">
           <div className="flex flex-col pt-2">
             {navItems.map((item) => (
               <Link
@@ -150,26 +139,21 @@ export default function Navigation() {
   );
 }
 
-// Illustrated logo on a tab that hangs below the nav bar. The link reserves
-// the tab's width in the row; the tab itself is absolutely positioned so it
-// can overflow the bar's fixed height. The tab and nav use bg-parchment, which
-// matches the PNG's opaque beige so the image edges disappear.
+// Text lockup standing in for the illustrated logo: serif "Fuzz", script
+// "Butts", and a small "Cat Rescue" line between gold rules.
 function Logo({ onClick }: { onClick: () => void }) {
   return (
-    <Link
-      href="/"
-      onClick={onClick}
-      aria-label="Fuzz Butts Cat Rescue — Home"
-      className="relative w-[154px] shrink-0 self-stretch lg:w-[289px]">
-      <span className="absolute left-0 top-0 z-10 rounded-b-2xl bg-parchment px-3 pb-2 pt-2">
-        <Image
-          src="/fuzz_butts_logo_cropped.png"
-          alt="Fuzz Butts Cat Rescue"
-          width={530}
-          height={327}
-          priority
-          className="h-auto w-[130px] lg:w-[265px]"
-        />
+    <Link href="/" onClick={onClick} aria-label="Fuzz Butts Cat Rescue — Home" className="flex shrink-0 flex-col items-center">
+      <span className="flex items-baseline leading-none">
+        <span className="font-display text-[1.75rem] font-bold tracking-tight text-brand sm:text-[2rem]">
+          Fuzz
+        </span>
+        <span className="-ml-0.5 font-script text-[2.4rem] text-gold sm:text-[2.75rem]">Butts</span>
+      </span>
+      <span className="-mt-1 flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.35em] text-ink">
+        <span className="h-px w-5 bg-gold" aria-hidden="true" />
+        Cat Rescue
+        <span className="h-px w-5 bg-gold" aria-hidden="true" />
       </span>
     </Link>
   );

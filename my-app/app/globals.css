@@ -13,7 +13,6 @@
   --gold-deep: #8c5a1e;
   --gold-light: #e8c99a;
   --cream: #fbf5ec;
-  --parchment: #f6ebda; /* logo PNG background — nav bar matches it */
   --surface: #fffbf5;
   --line: #eadbc6;
   --ink: #3b2a26;
@@ -33,7 +32,6 @@
   --color-gold-deep: var(--gold-deep);
   --color-gold-light: var(--gold-light);
   --color-cream: var(--cream);
-  --color-parchment: var(--parchment);
   --color-surface: var(--surface);
   --color-line: var(--line);
   --color-ink: var(--ink);
