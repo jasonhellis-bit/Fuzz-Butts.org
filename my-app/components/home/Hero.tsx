@@ -17,10 +17,10 @@ export default function Hero({ pet }: { pet: FeaturedPet | null }) {
           width={530}
           height={327}
           priority
-          className="h-auto w-[220px] sm:w-[260px] xl:w-[300px]"
+          className="h-auto w-[220px] self-center sm:w-[260px] lg:self-start xl:w-[300px]"
         />
 
-        <h1 className="leading-[0.95]">
+        <h1 className="self-stretch text-center leading-[0.95] lg:text-left">
           <span className="block text-5xl font-bold tracking-tight text-brand sm:text-6xl xl:text-7xl">
             Second Chances.
           </span>

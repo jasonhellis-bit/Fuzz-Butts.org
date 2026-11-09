@@ -47,7 +47,8 @@ export default function Navigation() {
   return (
     <nav className="sticky top-0 z-50 border-b border-line bg-cream/95 shadow-sm shadow-ink/5 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Logo onClick={closeMenu} />
+        {/* The home hero shows the full logo, so skip the text lockup there */}
+        {pathname !== "/" && <Logo onClick={closeMenu} />}
 
         {/* Desktop nav items */}
         <div className="hidden flex-1 items-center justify-end gap-1 lg:flex">
@@ -89,7 +90,7 @@ export default function Navigation() {
         {/* Mobile hamburger button */}
         <button
           onClick={() => setMobileMenuOpen((o) => !o)}
-          className="rounded-md p-2 text-brand lg:hidden"
+          className="ml-auto rounded-md p-2 text-brand lg:hidden"
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}>
           {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
@@ -100,7 +101,7 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div className="border-t border-line bg-cream px-4 pb-5 lg:hidden">
           <div className="flex flex-col pt-2">
-            {navItems.map((item) => (
+            {[{ label: "Home", href: "/", active: pathname === "/" }, ...navItems].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -143,7 +144,7 @@ export default function Navigation() {
 // "Butts", and a small "Cat Rescue" line between gold rules.
 function Logo({ onClick }: { onClick: () => void }) {
   return (
-    <Link href="/" onClick={onClick} aria-label="Fuzz Butts Cat Rescue — Home" className="flex shrink-0 flex-col items-center">
+    <Link href="/" onClick={onClick} aria-label="Fuzz Butts Cat Rescue — Home" className="hidden shrink-0 flex-col items-center lg:flex">
       <span className="flex items-baseline leading-none">
         <span className="font-display text-[1.75rem] font-bold tracking-tight text-brand sm:text-[2rem]">
           Fuzz
