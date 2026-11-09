@@ -48,7 +48,7 @@ export default function About() {
               <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
                 <div className="w-full sm:w-1/6">
                   <img
-                    src="/amelia_profile.png"
+                    src="/amelia_profile_2.png"
                     alt="Fuzz Butts founder"
                     className="h-auto w-full rounded-2xl border-4 border-surface object-cover shadow-lg ring-1 ring-line"
                   />
@@ -116,7 +116,7 @@ export default function About() {
               <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
                 <div className="w-full sm:w-1/6">
                   <img
-                    src="/fuzz_butts_cto.jpg"
+                    src="/jason_professional_headshot.jpg"
                     alt="Fuzz Butts Chief Technology Officer"
                     className="h-auto w-full rounded-2xl border-4 border-surface object-cover shadow-lg ring-1 ring-line"
                   />
