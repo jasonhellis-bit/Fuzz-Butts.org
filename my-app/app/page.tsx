@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import Hero from "@/components/home/Hero";
 import Pillars from "@/components/home/Pillars";
+import CafeAnnouncement from "@/components/home/CafeAnnouncement";
 import FeaturedCats, { type AdoptableCat } from "@/components/home/FeaturedCats";
 import MissionCard from "@/components/home/MissionCard";
 import GetInvolvedBand from "@/components/home/GetInvolvedBand";
@@ -113,6 +114,7 @@ export default async function Home() {
     <div className="flex flex-col">
       <Hero pet={pet} />
       <Pillars />
+      <CafeAnnouncement />
       <section className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-16 sm:px-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <FeaturedCats cats={gridCats} />
         <MissionCard stats={stats} />
