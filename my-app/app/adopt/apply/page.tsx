@@ -12,15 +12,15 @@ function formatPhone(value: string) {
 }
 
 const inputClass =
-  "border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors w-full";
+  "border border-line rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold transition-colors w-full";
 const textareaClass = `${inputClass} resize-none`;
 const selectClass = `${inputClass} bg-white`;
 
 function SectionHeader({ icon, title }: { icon: string; title: string }) {
   return (
-    <div className="flex items-center gap-3 pb-4 border-b border-gray-100 mb-2">
+    <div className="flex items-center gap-3 pb-4 border-b border-line mb-2">
       <span className="text-2xl">{icon}</span>
-      <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+      <h2 className="text-2xl font-bold text-brand">{title}</h2>
     </div>
   );
 }
@@ -38,11 +38,11 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-gray-700">
+      <label className="text-sm font-medium text-ink">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      {hint && <p className="text-xs text-gray-400 -mt-0.5">{hint}</p>}
+      {hint && <p className="text-xs text-ink-muted -mt-0.5">{hint}</p>}
       {children}
     </div>
   );
@@ -66,9 +66,9 @@ function CheckField({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-blue-600"
+        className="mt-0.5 h-4 w-4 rounded border-line accent-brand"
       />
-      <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors leading-snug">
+      <span className="text-sm text-ink group-hover:text-brand transition-colors leading-snug">
         {label}
       </span>
     </label>
@@ -182,20 +182,20 @@ export default function AdoptionApplicationPage() {
   if (submitted) {
     return (
       <div className="flex min-h-screen items-start justify-center px-4 pt-16 pb-16">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6 sm:p-10 text-center">
+        <div className="w-full max-w-md bg-surface border border-line rounded-2xl shadow-sm p-6 sm:p-10 text-center">
           <div className="text-5xl mb-4">🐾</div>
-          <h1 className="text-2xl font-bold mb-3">Application Received!</h1>
-          <p className="text-gray-500 mb-2">
+          <h1 className="text-3xl font-bold text-brand mb-3">Application Received!</h1>
+          <p className="text-ink-muted mb-2">
             Thank you for applying to adopt, {firstName}!
           </p>
-          <p className="text-gray-500 mb-6">
+          <p className="text-ink-muted mb-6">
             We&apos;ll review your application and reach out to{" "}
-            <span className="font-medium text-gray-700">{email}</span> within a
+            <span className="font-medium text-ink">{email}</span> within a
             few business days.
           </p>
           <Link
             href="/adopt"
-            className="inline-block bg-blue-600 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors">
+            className="inline-block bg-brand text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-brand-dark transition-colors">
             Back to Adoptable Cats
           </Link>
         </div>
@@ -206,10 +206,10 @@ export default function AdoptionApplicationPage() {
   return (
     <div className="min-h-screen pb-16">
       {/* Page header */}
-      <div className="bg-blue-600 text-white px-4 py-10 text-center">
+      <div className="bg-brand-dark text-white px-4 py-12 text-center">
         <div className="text-4xl mb-3">🐾</div>
         <h1 className="text-3xl md:text-4xl font-bold mb-2">Adoption Application</h1>
-        <p className="text-blue-100 max-w-xl mx-auto text-sm md:text-base">
+        <p className="text-white/85 max-w-xl mx-auto text-sm md:text-base">
           We want to make sure every cat finds a safe, loving forever home. Please fill out this
           form completely and honestly — there are no wrong answers!
         </p>
@@ -235,7 +235,7 @@ export default function AdoptionApplicationPage() {
         )}
 
         {/* Section 1: Applicant Information */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="👤" title="Applicant Information" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -330,7 +330,7 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 2: Household Details */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="🏠" title="Household Details" />
 
           <Field label="Number of adults living in the home" required>
@@ -406,7 +406,7 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 3: Housing Information */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="🏡" title="Housing Information" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -475,7 +475,7 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 4: Pet Care Experience */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="🐾" title="Pet Care Experience" />
 
           <Field
@@ -516,7 +516,7 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 5: Lifestyle */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="☀️" title="Lifestyle Questions" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -587,9 +587,9 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 6: Veterinary Reference */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="🩺" title="Veterinary Reference" />
-          <p className="text-sm text-gray-400 -mt-2">
+          <p className="text-sm text-ink-muted -mt-2">
             If you&apos;ve never owned a pet, leave this section blank.
           </p>
 
@@ -633,10 +633,10 @@ export default function AdoptionApplicationPage() {
         </div>
 
         {/* Section 7: Agreement & Consent */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
+        <div className="bg-surface rounded-2xl shadow-sm shadow-ink/5 border border-line p-6 flex flex-col gap-4">
           <SectionHeader icon="✍️" title="Agreement & Consent" />
 
-          <div className="bg-blue-50 rounded-lg p-4 text-sm text-blue-800 leading-relaxed">
+          <div className="bg-brand-tint rounded-lg p-4 text-sm text-ink leading-relaxed">
             <p className="font-semibold mb-1">Adoption Agreement</p>
             <p>
               By submitting this application, you agree to provide a safe, loving, and permanent
@@ -674,8 +674,8 @@ export default function AdoptionApplicationPage() {
             />
           </Field>
 
-          <div className="pt-2 border-t border-gray-100 mt-2">
-            <p className="text-xs text-gray-400 mb-4">
+          <div className="pt-2 border-t border-line mt-2">
+            <p className="text-xs text-ink-muted mb-4">
               Date:{" "}
               {new Date().toLocaleDateString("en-US", {
                 year: "numeric",
@@ -686,12 +686,12 @@ export default function AdoptionApplicationPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-blue-600 text-white rounded-lg py-3 text-base font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+              className="w-full bg-brand text-white rounded-full py-3 text-base font-semibold hover:bg-brand-dark active:bg-brand-dark transition-colors shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
               {submitting ? "Submitting…" : "Submit Application"}
             </button>
-            <p className="text-xs text-gray-400 text-center mt-3">
+            <p className="text-xs text-ink-muted text-center mt-3">
               Questions?{" "}
-              <a href="mailto:fuzzbuttinc@gmail.com" className="text-blue-500 hover:underline">
+              <a href="mailto:fuzzbuttinc@gmail.com" className="text-brand font-semibold hover:underline">
                 fuzzbuttinc@gmail.com
               </a>
             </p>
